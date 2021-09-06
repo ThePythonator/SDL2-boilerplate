@@ -1,4 +1,4 @@
-#include "APairOfSquares.hpp"
+#include "YourGame.hpp"
 
 // Main method
 
