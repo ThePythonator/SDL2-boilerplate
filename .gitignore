@@ -1,0 +1,5 @@
+# Folders
+.vs/
+out/
+
+# CMake Settings: don't want my settings copied to the repo
