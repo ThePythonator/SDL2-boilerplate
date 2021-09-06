@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.9)
 project(YourGame)
 
 # Add your sources here (adding headers is optional, but helps some CMake generators)
-set(PROJECT_SOURCE "YourGame.cpp")
+set(PROJECT_SOURCE "YourGame.cpp" "Game.cpp" "Constants.cpp")
 
 # ... and any other files you want in the release here
 set(PROJECT_DISTRIBS LICENSE README.md)
