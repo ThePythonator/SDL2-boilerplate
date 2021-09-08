@@ -5,8 +5,6 @@
 #include <string>
 
 #include "Colour.hpp"
-#include "Bezier.hpp"
-#include "Entity.hpp"
 
 // Constants
 

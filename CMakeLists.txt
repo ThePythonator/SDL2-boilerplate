@@ -31,10 +31,7 @@ include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${CMAKE_CURR
 #    DEPENDS ${ASSET_DEPENDS}
 #)
 
-
-add_executable(APairOfSquares ${PROJECT_SOURCE})
-
-target_link_libraries(APairOfSquares ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+add_subdirectory(src)
 
 # setup release packages
 #install (FILES ${PROJECT_DISTRIBS} DESTINATION .)
