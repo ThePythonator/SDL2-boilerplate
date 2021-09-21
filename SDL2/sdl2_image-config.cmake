@@ -1,0 +1,16 @@
+find_path(SDL2_IMAGE_INCLUDE_DIR SDL_image.h
+	HINTS ${SDL2_DIR}
+	PATH_SUFFIXES SDL2 include/SDL2 include
+)
+
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+	set(VC_LIB_PATH_SUFFIX lib/x64)
+else()
+	set(VC_LIB_PATH_SUFFIX lib/x86)
+endif()
+
+find_library(SDL2_IMAGE_LIBRARY
+	NAMES SDL2_image
+	HINTS ${SDL2_DIR}
+	PATH_SUFFIXES lib ${VC_LIB_PATH_SUFFIX}
+)

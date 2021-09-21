@@ -8,7 +8,5 @@ int main(int argc, char* argv[])
 	Game game;
 
 	// Run game
-	game.run();
-
-	return 0;
+	return game.run();
 }
