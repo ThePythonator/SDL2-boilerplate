@@ -1,6 +1,8 @@
 #include "SDLExtras.hpp"
 
 std::string find_assets_path(std::string test_file, uint8_t depth) {
+	printf("Attempting to find assets folder...\n");
+
 	std::string base_path = SDL_GetBasePath();
 	SDL_Surface* test_surface = load_surface("assets/" + test_file);
 
@@ -24,6 +26,10 @@ std::string find_assets_path(std::string test_file, uint8_t depth) {
 	}
 
 	SDL_FreeSurface(test_surface);
+
+	std::string message = "Found assets folder: " + base_path + "assets/\n";
+
+	printf(message.c_str());
 
 	return base_path + "assets/";
 }

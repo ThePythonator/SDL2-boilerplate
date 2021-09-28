@@ -1,5 +1,5 @@
-include_directories(${PROJECT_SOURCE_DIR}/include)
+#include_directories(${PROJECT_SOURCE_DIR}/include)
 
-add_executable(YourGame ${PROJECT_SOURCE})
+#add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 
-target_link_libraries(YourGame ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+#target_link_libraries(${PROJECT_NAME} SDL2::SDL2main SDL2::SDL2 SDL2::image)
