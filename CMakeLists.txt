@@ -26,6 +26,9 @@ set(GAME_SOURCES
 # Uncomment if no console should be created
 # set(WINDOWS_NO_CONSOLE)
 
+# Uncomment if using Assets.yml and the 32blit asset manager
+# set(USE_ASSETS_YML)
+
 
 project(${PROJECT_NAME})
 
@@ -59,8 +62,10 @@ if (USE_GLOB)
 	file(GLOB GAME_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/game/*.cpp")
 endif()
 
-set(PROJECT_SOURCES ${FRAMEWORK_SOURCES};${GAME_SOURCES};"Assets.cpp")
-message(${FRAMEWORK_SOURCES})
+set(PROJECT_SOURCES ${FRAMEWORK_SOURCES};${GAME_SOURCES})
+if(USE_ASSETS_YML)
+	list(APPEND PROJECT_SOURCES "Assets.cpp")
+endif()
 
 # ... and any other files you want in the release here
 set(PROJECT_DISTRIBS LICENSE README.md)
@@ -85,12 +90,14 @@ add_executable(${PROJECT_NAME} ${CONSOLE_FLAG} MACOSX_BUNDLE ${PROJECT_SOURCES})
 
 find_package(PythonInterp 3.6 REQUIRED)
 
+if(USE_ASSETS_YML)
 # Build Assets.hpp/cpp files
 add_custom_command(
     OUTPUT ${ASSET_OUTPUTS}
     COMMAND ${PYTHON_EXECUTABLE} -m ttblit pack --config ${CMAKE_CURRENT_SOURCE_DIR}/${ASSET_DEPENDS} --output ${CMAKE_CURRENT_BINARY_DIR} --force
     DEPENDS ${ASSET_DEPENDS}
 )
+endif()
 
 include(get_sdl2.cmake)
 
