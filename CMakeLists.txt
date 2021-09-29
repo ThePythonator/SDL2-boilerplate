@@ -118,6 +118,7 @@ install(DIRECTORY ${PROJECT_ASSETS}
 )
 
 if (UNIX AND NOT APPLE)
+	# Todo: auto-gen this file using current PROJECT_NAME
     install(FILES APoS_Launcher_Linux.sh
 	    DESTINATION .
     )
