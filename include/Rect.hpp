@@ -2,10 +2,16 @@
 
 #include <cstdint>
 
-struct Rect_int32 {
-	int32_t x, y, w, h;
-};
+namespace Framework {
+	template<typename T>
+	struct Rect {
+		T x, y, w, h;
+	};
 
-struct Rect_float {
-	float x, y, w, h;
-};
+	typedef Rect<int32_t> RectInt;
+	typedef Rect<float> RectFloat;
+
+	// Used for equality checking
+	template<typename T>
+	bool equals(Rect<T> r1, Rect<T> r2);
+}

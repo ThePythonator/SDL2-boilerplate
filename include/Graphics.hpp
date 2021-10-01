@@ -3,3 +3,4 @@
 #include "Image.hpp"
 #include "Spritesheet.hpp"
 #include "Text.hpp"
+#include "Colour.hpp"

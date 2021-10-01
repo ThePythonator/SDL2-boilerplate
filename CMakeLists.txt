@@ -17,6 +17,9 @@ set(PROJECT_NAME YourGame)
 set(GAME_SOURCES
 	"Application.cpp"
 	"Game.cpp"
+
+	"TitleStage.cpp"
+
 	"Constants.cpp"
 )
 
@@ -35,6 +38,8 @@ project(${PROJECT_NAME})
 set(FRAMEWORK_SOURCES
 	"BaseGame.cpp"
 	
+	"BaseStage.cpp"
+	
 	"Input.cpp"
 	"Keys.cpp"
 	"Mouse.cpp"
@@ -46,13 +51,24 @@ set(FRAMEWORK_SOURCES
 	"Text.cpp"
 	"Spritesheet.cpp"
 	"Image.cpp"
+	"Colour.cpp"
+
+	"Transform.cpp"
 	
 	"Physics.cpp"
 	"Point.cpp"
 	"Rect.cpp"
+
+	"File.cpp"
 	
 	"Curves.cpp"
 )
+
+if(32BLIT_HW)
+	list(APPEND PROJECT_SOURCES "32BlitExtras.cpp")
+else()
+	list(APPEND PROJECT_SOURCES "SDL2Extras.cpp")
+endif()
 
 list(TRANSFORM GAME_SOURCES PREPEND src/game/)
 list(TRANSFORM FRAMEWORK_SOURCES PREPEND src/framework/)
@@ -60,6 +76,7 @@ list(TRANSFORM FRAMEWORK_SOURCES PREPEND src/framework/)
 if (USE_GLOB)
 	# Alternatively, let glob find all the .cpp files in the src directory and subdirectories... (CMake won't detect when new files are added)
 	file(GLOB GAME_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/game/*.cpp")
+	# file(GLOB FRAMEWORK_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/framework/*.cpp")
 endif()
 
 set(PROJECT_SOURCES ${FRAMEWORK_SOURCES};${GAME_SOURCES})

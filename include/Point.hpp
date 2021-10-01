@@ -2,10 +2,16 @@
 
 #include <cstdint>
 
-struct Point_int32 {
-	int32_t x, y;
-};
+namespace Framework {
+	template<typename T>
+	struct Point {
+		T x, y;
+	};
 
-struct Point_float {
-	float x, y;
-};
+	typedef Point<int32_t> PointInt;
+	typedef Point<float> PointFloat;
+
+	// Used for equality checking
+	template<typename T>
+	bool equals(Point<T> p1, Point<T> p2);
+}
