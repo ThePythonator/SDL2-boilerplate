@@ -5,18 +5,10 @@ Game::Game() : BaseGame() {
 }
 
 void Game::start() {
-
+	stage = new TitleStage();
 }
 
 void Game::end() {
-
-}
-
-void Game::update(float dt) {
-
-}
-
-void Game::render() {
 
 }
 

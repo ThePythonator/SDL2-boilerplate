@@ -49,4 +49,12 @@ namespace Framework {
 	bool BaseGame::main_loop() {
 		return false;
 	}
+
+	void BaseGame::update(float dt) {
+		stage->update(dt);
+	}
+
+	void BaseGame::render() {
+		stage->render();
+	}
 }

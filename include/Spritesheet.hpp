@@ -5,8 +5,8 @@
 
 class Spritesheet {
 public:
-	//Spritesheet();
-	//Spritesheet(SDL_Renderer* renderer, Image* spritesheet_image, uint8_t sprite_size = 16, uint8_t scale = 1);
+	Spritesheet();
+	Spritesheet(Graphics* graphics, Image* spritesheet_image, uint8_t sprite_size = 16, uint8_t scale = 1);
 
 	//void sprite(uint16_t index, float x, float y, float scale = 1.0f);
 	//void sprite(uint16_t index, float x, float y, float scale, SDL_RendererFlip flip);
@@ -34,9 +34,9 @@ public:
 	//uint8_t get_sprite_size();
 
 private:
-	//SDL_Renderer* renderer = NULL;
+	//SDL_Renderer* renderer = nullptr;
 
-	//SDL_Texture* spritesheet_texture = NULL;
+	//SDL_Texture* spritesheet_texture = nullptr;
 
 	uint32_t w, h;
 	uint8_t rows, columns;

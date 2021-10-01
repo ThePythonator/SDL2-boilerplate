@@ -39,6 +39,6 @@ namespace Framework::SDL2Extras {
 		// Set renderer mode
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-		return (renderer != NULL && window != NULL);
+		return (renderer != nullptr && window != nullptr);
 	}
 }

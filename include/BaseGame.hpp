@@ -24,13 +24,16 @@ namespace Framework {
 		virtual void end() = 0;
 
 		// Update and render functions
-		virtual void update(float dt) = 0;
-		virtual void render() = 0;
+		//virtual void update(float dt) = 0;
+		//virtual void render() = 0;
 
 		// Allows game to modify data being loaded and deleted.
 		// Possibly should not be pure
 		virtual void load_data() = 0;
 		virtual void clear_data() = 0;
+
+		// Current stage
+		BaseStage* stage = nullptr;
 
 	private:
 		// Returns true if successful, false if something went wrong.
@@ -40,15 +43,17 @@ namespace Framework {
 		// Main game loop
 		bool main_loop();
 
-		// Current stage
-		BaseStage* stage = nullptr;
+		// Update and render functions
+		// Not sure if should be overridable or not?
+		void update(float dt);
+		void render();
 
 
 		// Maybe put inside some graphics wrapper?
 		// Main game window
-		SDL_Window* window = NULL;
+		SDL_Window* window = nullptr;
 
 		// Renderer for window.
-		SDL_Renderer* renderer = NULL;
+		SDL_Renderer* renderer = nullptr;
 	};
 }
