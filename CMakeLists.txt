@@ -65,9 +65,9 @@ set(FRAMEWORK_SOURCES
 )
 
 if(32BLIT_HW)
-	list(APPEND PROJECT_SOURCES "32BlitExtras.cpp")
+	list(APPEND FRAMEWORK_SOURCES "32BlitExtras.cpp")
 else()
-	list(APPEND PROJECT_SOURCES "SDL2Extras.cpp")
+	list(APPEND FRAMEWORK_SOURCES "SDL2Extras.cpp")
 endif()
 
 list(TRANSFORM GAME_SOURCES PREPEND src/game/)
