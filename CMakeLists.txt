@@ -18,7 +18,7 @@ set(GAME_SOURCES
 	"Application.cpp"
 	"Game.cpp"
 
-	"TitleStage.cpp"
+	"Stages.cpp"
 
 	"Constants.cpp"
 )
@@ -48,26 +48,20 @@ set(FRAMEWORK_SOURCES
 	"Sound.cpp"
 	
 	"Graphics.cpp"
-	"Text.cpp"
-	"Spritesheet.cpp"
+#	"Text.cpp"
+#	"Spritesheet.cpp"
 	"Image.cpp"
 	"Colour.cpp"
 
-	"Transform.cpp"
-	
-	"Physics.cpp"
-	"Point.cpp"
-	"Rect.cpp"
-
 	"File.cpp"
 	
-	"Curves.cpp"
+#	"Curves.cpp"
 )
 
 if(32BLIT_HW)
-	list(APPEND FRAMEWORK_SOURCES "32BlitExtras.cpp")
+	list(APPEND FRAMEWORK_SOURCES "32BlitExtras.cpp") # 32BLIT_HW not properly supported
 else()
-	list(APPEND FRAMEWORK_SOURCES "SDL2Extras.cpp")
+	list(APPEND FRAMEWORK_SOURCES "SDLUtils.cpp")
 endif()
 
 list(TRANSFORM GAME_SOURCES PREPEND src/game/)
@@ -116,13 +110,17 @@ add_custom_command(
 )
 endif()
 
-include(get_sdl2.cmake)
+include(fetch/get_json.cmake)
+include(fetch/get_sdl2.cmake)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/framework)
+include_directories(${PROJECT_SOURCE_DIR}/include/game)
+include_directories(${PROJECT_SOURCE_DIR}/include/external)
+
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 # Link
-target_link_libraries(${PROJECT_NAME} SDL2::SDL2main SDL2::SDL2 SDL2::image)
+target_link_libraries(${PROJECT_NAME} SDL2::SDL2main SDL2::SDL2 SDL2::image nlohmann_json::nlohmann_json)
 
 
 # Setup release packages

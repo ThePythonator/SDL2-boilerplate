@@ -10,5 +10,5 @@
 namespace Framework::SDL2Extras {
 
 	// Initialises necessary SDL bits, and assigns window and renderer.
-	bool init_sdl(SDL_Window* window, SDL_Renderer* renderer);
+	bool init_sdl(SDL_Window*& window, SDL_Renderer*& renderer);
 }

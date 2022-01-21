@@ -43,4 +43,6 @@ namespace Framework {
 
 	// Idea: encapsulate key_handler (KeyUnion instance) in class
 
+	// class Keyboard??
+
 }

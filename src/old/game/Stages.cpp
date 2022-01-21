@@ -1,5 +1,5 @@
 #include "BaseStage.hpp"
-#include "TitleStage.hpp"
+#include "Stages.hpp"
 
 TitleStage::TitleStage() : BaseStage() {
 

@@ -2,7 +2,7 @@
 
 #include "BaseGame.hpp"
 
-#include "TitleStage.hpp"
+#include "Stages.hpp"
 
 class Game : public Framework::BaseGame {
 public:

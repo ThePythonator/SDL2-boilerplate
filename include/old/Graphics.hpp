@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SDL2.h"
+#include "SDL.h"
 
 #include "Image.hpp"
 #include "Spritesheet.hpp"

@@ -2,7 +2,7 @@
 
 namespace Framework::SDL2Extras {
 
-	bool init_sdl(SDL_Window* window, SDL_Renderer* renderer) {
+	bool init_sdl(SDL_Window*& window, SDL_Renderer*& renderer) {
 		// Initialise SDL
 		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		{
