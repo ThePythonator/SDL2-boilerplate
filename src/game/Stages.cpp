@@ -6,7 +6,7 @@ TitleStage::TitleStage() : BaseStage() {
 
 }
 
-void TitleStage::update(float dt) {
+void TitleStage::update(float dt, Framework::InputHandler& input) {
 
 }
 
@@ -20,7 +20,7 @@ GameStage::GameStage() : BaseStage() {
 
 }
 
-void GameStage::update(float dt) {
+void GameStage::update(float dt, Framework::InputHandler& input) {
 
 }
 
@@ -35,7 +35,7 @@ PausedStage::PausedStage(BaseStage* background_stage) : BaseStage() {
 	_background_stage = background_stage;
 }
 
-void PausedStage::update(float dt) {
+void PausedStage::update(float dt, Framework::InputHandler& input) {
 	if (false) {
 		// Exit pause
 		finish(_background_stage);
