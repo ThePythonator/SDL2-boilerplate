@@ -7,19 +7,56 @@ namespace Framework {
 
 	void InputHandler::update() {
 		KeyHandler::update(key_data);
+		mouse.update();
 	}
 
 	void InputHandler::handle_sdl_event(const SDL_Event& sdl_event) {
-		if (sdl_event.type == SDL_KEYDOWN || sdl_event.type == SDL_KEYUP) {
-			KeyHandler::update_key(key_data, sdl_event);
-		}
+		KeyHandler::update_key(key_data, sdl_event);
+		mouse.update_mouse(sdl_event);
 	}
 
 	void InputHandler::set_key(KeyHandler::Key key, KeyHandler::KeyState key_state) {
 		KeyHandler::set_key(key_data, key, key_state);
 	}
 
-	KeyHandler::KeyUnion InputHandler::get_key_union() {
-		return key_data;
+	bool InputHandler::is_up(KeyHandler::Key key) {
+		KeyHandler::KeyState key_state = key_data.key_array[static_cast<int>(key)];
+		return key_state == KeyHandler::KeyState::STILL_UP || key_state == KeyHandler::KeyState::JUST_RELEASED;
+	}
+	bool InputHandler::is_down(KeyHandler::Key key) {
+		KeyHandler::KeyState key_state = key_data.key_array[static_cast<int>(key)];
+		return key_state == KeyHandler::KeyState::STILL_DOWN || key_state == KeyHandler::KeyState::JUST_PRESSED;
+	}
+	bool InputHandler::just_up(KeyHandler::Key key) {
+		KeyHandler::KeyState key_state = key_data.key_array[static_cast<int>(key)];
+		return key_state == KeyHandler::KeyState::JUST_RELEASED;
+	}
+	bool InputHandler::just_down(KeyHandler::Key key) {
+		KeyHandler::KeyState key_state = key_data.key_array[static_cast<int>(key)];
+		return key_state == KeyHandler::KeyState::JUST_PRESSED;
+	}
+
+	bool InputHandler::is_up(MouseHandler::MouseButton button) {
+		MouseHandler::ButtonState button_state = mouse.button_state(button);
+		return button_state == MouseHandler::ButtonState::STILL_UP || button_state == MouseHandler::ButtonState::JUST_RELEASED;
+	}
+
+	bool InputHandler::is_down(MouseHandler::MouseButton button) {
+		MouseHandler::ButtonState button_state = mouse.button_state(button);
+		return button_state == MouseHandler::ButtonState::STILL_DOWN || button_state == MouseHandler::ButtonState::JUST_PRESSED;
+	}
+
+	bool InputHandler::just_up(MouseHandler::MouseButton button) {
+		MouseHandler::ButtonState button_state = mouse.button_state(button);
+		return button_state == MouseHandler::ButtonState::JUST_RELEASED;
+	}
+
+	bool InputHandler::just_down(MouseHandler::MouseButton button) {
+		MouseHandler::ButtonState button_state = mouse.button_state(button);
+		return button_state == MouseHandler::ButtonState::JUST_PRESSED;
+	}
+
+	vec2 InputHandler::mouse_position() {
+		return mouse.position();
 	}
 }

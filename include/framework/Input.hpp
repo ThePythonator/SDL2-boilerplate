@@ -14,11 +14,21 @@ namespace Framework {
 
 		void set_key(KeyHandler::Key key, KeyHandler::KeyState key_state);
 
-		KeyHandler::KeyUnion get_key_union();
+		bool is_up(KeyHandler::Key key); // Returns true if STILL_UP or JUST_RELEASED
+		bool is_down(KeyHandler::Key key); // Returns true if STILL_DOWN or JUST_PRESSED
+		bool just_up(KeyHandler::Key key); // Returns true if JUST_RELEASED
+		bool just_down(KeyHandler::Key key); // Returns true if JUST_PRESSED
+
+		bool is_up(MouseHandler::MouseButton button); // Returns true if STILL_UP or JUST_RELEASED
+		bool is_down(MouseHandler::MouseButton button); // Returns true if STILL_DOWN or JUST_PRESSED
+		bool just_up(MouseHandler::MouseButton button); // Returns true if JUST_RELEASED
+		bool just_down(MouseHandler::MouseButton button); // Returns true if JUST_PRESSED
+
+		vec2 mouse_position();
 
 	private:
 		KeyHandler::KeyUnion key_data;
 
-		//MouseHandler::something mouse_data;
+		MouseHandler::Mouse mouse;
 	};
 }

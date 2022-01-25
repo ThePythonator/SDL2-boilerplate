@@ -33,11 +33,6 @@ namespace Framework {
 			KeyState key_array[KEY_COUNT];
 		};
 
-		bool is_up(KeyState key_state); // Returns true if STILL_UP or JUST_RELEASED
-		bool is_down(KeyState key_state); // Returns true if STILL_DOWN or JUST_PRESSED
-		bool just_up(KeyState key_state); // Returns true if JUST_RELEASED
-		bool just_down(KeyState key_state); // Returns true if JUST_PRESSED
-
 		void update(KeyUnion& key_handler);
 
 		void update_key(KeyUnion& key_handler, const SDL_Event& sdl_event);

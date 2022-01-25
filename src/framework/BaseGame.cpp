@@ -96,7 +96,7 @@ namespace Framework {
 			delete stage;
 			stage = temp_stage;
 		}
-		stage->update(dt);
+		stage->update(dt, input);
 	}
 
 	void BaseGame::render() {
