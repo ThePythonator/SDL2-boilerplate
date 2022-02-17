@@ -116,12 +116,12 @@ namespace Framework {
 		if (source_rect.size == vec2{ 0.0f, 0.0f })			source_rect.size = get_size();
 		if (destination_rect.size == vec2{ 0.0f, 0.0f })	destination_rect.size = get_size();
 
-		SDL_Rect* sdl_src_rect_ptr = &SDLUtils::get_sdl_rect(source_rect);
-		SDL_Rect* sdl_dst_rect_ptr = &SDLUtils::get_sdl_rect(destination_rect);
+		SDL_Rect sdl_src_rect = SDLUtils::get_sdl_rect(source_rect);
+		SDL_Rect sdl_dst_rect = SDLUtils::get_sdl_rect(destination_rect);
 
-		SDL_Point* sdl_centre_ptr = &SDLUtils::get_sdl_point(centre);
+		SDL_Point sdl_centre = SDLUtils::get_sdl_point(centre);
 
-		SDL_RenderCopyEx(graphics_ptr->get_renderer(), texture, sdl_src_rect_ptr, sdl_dst_rect_ptr, angle, sdl_centre_ptr, SDLUtils::get_sdl_renderer_flip(flip));
+		SDL_RenderCopyEx(graphics_ptr->get_renderer(), texture, &sdl_src_rect, &sdl_dst_rect, angle, &sdl_centre, SDLUtils::get_sdl_renderer_flip(flip));
 	}
 
 	void Image::render(Rect source_rect, Rect destination_rect, float angle, ImageFlip flip) {
@@ -137,11 +137,11 @@ namespace Framework {
 		if (source_rect.size == vec2{ 0.0f, 0.0f })			source_rect.size = get_size();
 		if (destination_rect.size == vec2{ 0.0f, 0.0f })	destination_rect.size = get_size();
 
-		SDL_Rect* sdl_src_rect_ptr = &SDLUtils::get_sdl_rect(source_rect);
-		SDL_Rect* sdl_dst_rect_ptr = &SDLUtils::get_sdl_rect(destination_rect);
+		SDL_Rect sdl_src_rect = SDLUtils::get_sdl_rect(source_rect);
+		SDL_Rect sdl_dst_rect = SDLUtils::get_sdl_rect(destination_rect);
 
 		// Render from texture to screen
-		SDL_RenderCopy(graphics_ptr->get_renderer(), texture, sdl_src_rect_ptr, sdl_dst_rect_ptr);
+		SDL_RenderCopy(graphics_ptr->get_renderer(), texture, &sdl_src_rect, &sdl_dst_rect);
 	}
 
 	void Image::render(Rect destination_rect) {
