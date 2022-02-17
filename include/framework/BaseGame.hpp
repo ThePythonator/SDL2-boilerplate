@@ -5,13 +5,14 @@
 
 #include "SDL.h"
 
-#include "Constants.hpp"
-
 #include "SDLUtils.hpp"
 
+#include "Constants.hpp"
+
 #include "BaseStage.hpp"
+
 #include "Input.hpp"
-#include "Graphics.hpp"
+#include "GraphicsObjects.hpp"
 
 namespace Framework {
 	class BaseGame {
@@ -26,17 +27,14 @@ namespace Framework {
 		virtual void start() = 0;
 		virtual void end() = 0;
 
-		// Update and render functions
-		/*virtual void update(float dt) = 0;
-		virtual void render() = 0;*/
-
 		// Allows game to modify data being loaded and deleted.
 		// Possibly should not be pure
 		virtual void load_data() = 0;
 		virtual void clear_data() = 0;
 
 		InputHandler input;
-		Graphics graphics;
+
+		GraphicsObjects graphics_objects;
 
 		// Current stage
 		BaseStage* stage = nullptr;
@@ -46,13 +44,13 @@ namespace Framework {
 		bool init();
 		void quit();
 
-		void update(float dt);
+		bool update(float dt);
 		void render();
 
 		// Main game loop
 		bool main_loop();
 
-		float last_time = 0.0f;
+		uint32_t last_time = 0;
 
 		// Main game window
 		SDL_Window* window = nullptr;

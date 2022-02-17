@@ -37,26 +37,28 @@ namespace Framework {
 	}
 
 	bool InputHandler::is_up(MouseHandler::MouseButton button) {
-		MouseHandler::ButtonState button_state = mouse.button_state(button);
-		return button_state == MouseHandler::ButtonState::STILL_UP || button_state == MouseHandler::ButtonState::JUST_RELEASED;
+		MouseHandler::MouseButtonState button_state = mouse.button_state(button);
+		return button_state == MouseHandler::MouseButtonState::STILL_UP || button_state == MouseHandler::MouseButtonState::JUST_RELEASED;
 	}
 
 	bool InputHandler::is_down(MouseHandler::MouseButton button) {
-		MouseHandler::ButtonState button_state = mouse.button_state(button);
-		return button_state == MouseHandler::ButtonState::STILL_DOWN || button_state == MouseHandler::ButtonState::JUST_PRESSED;
+		// ALT: 
+		// return mouse.pressed(button);
+		MouseHandler::MouseButtonState button_state = mouse.button_state(button);
+		return button_state == MouseHandler::MouseButtonState::STILL_DOWN || button_state == MouseHandler::MouseButtonState::JUST_PRESSED;
 	}
 
 	bool InputHandler::just_up(MouseHandler::MouseButton button) {
-		MouseHandler::ButtonState button_state = mouse.button_state(button);
-		return button_state == MouseHandler::ButtonState::JUST_RELEASED;
+		MouseHandler::MouseButtonState button_state = mouse.button_state(button);
+		return button_state == MouseHandler::MouseButtonState::JUST_RELEASED;
 	}
 
 	bool InputHandler::just_down(MouseHandler::MouseButton button) {
-		MouseHandler::ButtonState button_state = mouse.button_state(button);
-		return button_state == MouseHandler::ButtonState::JUST_PRESSED;
+		MouseHandler::MouseButtonState button_state = mouse.button_state(button);
+		return button_state == MouseHandler::MouseButtonState::JUST_PRESSED;
 	}
 
-	vec2 InputHandler::mouse_position() {
-		return mouse.position();
+	MouseHandler::Mouse* InputHandler::get_mouse() {
+		return &mouse;
 	}
 }

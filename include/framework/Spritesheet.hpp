@@ -3,45 +3,118 @@
 #include "Image.hpp"
 #include "Transform.hpp"
 
-class Spritesheet {
-public:
-	Spritesheet();
-	Spritesheet(Graphics* graphics, Image* spritesheet_image, uint8_t sprite_size = 16, uint8_t scale = 1);
+namespace Framework {
+	class Spritesheet {
+	public:
+		Spritesheet();
+		Spritesheet(Graphics* graphics, Image* spritesheet_image, uint8_t sprite_size = 16, uint8_t default_scale = 1, bool scale_positions = true);
 
-	//void sprite(uint16_t index, float x, float y, float scale = 1.0f);
-	//void sprite(uint16_t index, float x, float y, float scale, SDL_RendererFlip flip);
-	//void sprite(uint16_t index, float x, float y, float scale, float angle, SDL_Point* center, SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE);
+		void sprite(uint16_t index, vec2 position, SpriteTransform transform = SpriteTransform::NONE);
+		void sprite(uint16_t index, float x, float y, SpriteTransform transform = SpriteTransform::NONE);
+		void sprite(uint16_t index, vec2 position, float scale, SpriteTransform transform = SpriteTransform::NONE);
+		void sprite(uint16_t index, float x, float y, float scale, SpriteTransform transform = SpriteTransform::NONE);
+		void sprite(uint16_t index, vec2 position, float scale, float angle, SpriteTransform transform = SpriteTransform::NONE);
+		void sprite(uint16_t index, float x, float y, float scale, float angle, SpriteTransform transform = SpriteTransform::NONE);
+		void sprite(uint16_t index, vec2 position, float scale, float angle, vec2 centre, SpriteTransform transform = SpriteTransform::NONE);
+		void sprite(uint16_t index, float x, float y, float scale, float angle, vec2 centre, SpriteTransform transform = SpriteTransform::NONE);
 
-	//void sprite_scaled(uint16_t index, float x, float y);
-	//void sprite_scaled(uint16_t index, float x, float y, SDL_RendererFlip flip);
-	//void sprite_scaled(uint16_t index, float x, float y, float angle, SDL_Point* center, SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE);
+		void rect(Rect src, vec2 position, SpriteTransform transform = SpriteTransform::NONE);
+		void rect(Rect src, float x, float y, SpriteTransform transform = SpriteTransform::NONE);
+		void rect(Rect src, vec2 position, float scale, SpriteTransform transform = SpriteTransform::NONE);
+		void rect(Rect src, float x, float y, float scale, SpriteTransform transform = SpriteTransform::NONE);
+		void rect(Rect src, vec2 position, float scale, float angle, vec2 centre, SpriteTransform transform = SpriteTransform::NONE);
+		void rect(Rect src, float x, float y, float scale, float angle, vec2 centre, SpriteTransform transform = SpriteTransform::NONE);
 
-	//void rect(SDL_Rect* src_rect, float x, float y);
-	//void rect(SDL_Rect* src_rect, float x, float y, float scale);
+		uint8_t get_sprite_size();
+		uint8_t get_scale();
 
-	//void rect_scaled(SDL_Rect* src_rect, float x, float y);
+		Image* get_image();
 
+		//void set_blend_mode(SDL_BlendMode blending);
+		//void set_alpha(uint8_t alpha);
 
-	//void set_blend_mode(SDL_BlendMode blending);
-	//void set_alpha(uint8_t alpha);
+		//uint8_t get_alpha();
 
+	private:
+		//Graphics* _graphics = nullptr; // Note that now it appears we don't even need this
+		Image* _spritesheet_image = nullptr;
 
-	//float get_scale();
-	//uint8_t get_alpha();
+		uint32_t _w = 0;
+		uint32_t _h = 0;
+		uint8_t _rows = 0;
+		uint8_t _columns = 0;
 
-	//SDL_Texture* get_texture();
+		uint8_t _sprite_size = 16;
+		uint8_t _default_scale = 1;
 
-	//uint8_t get_sprite_size();
+		bool _scale_positions = false;
+	};
 
-private:
-	//SDL_Renderer* renderer = nullptr;
+	class BaseSprite {
+	public:
+		BaseSprite();
 
-	//SDL_Texture* spritesheet_texture = nullptr;
+		virtual void render(vec2 position) = 0;
+	};
 
-	uint32_t w, h;
-	uint8_t rows, columns;
+	class ImageSprite : public BaseSprite {
+	public:
+		ImageSprite();
+		ImageSprite(Image* image, float scale = 1.0f);
 
-	//uint8_t sprite_size;
+		void render(vec2 position);
 
-	//uint8_t scale;
-};
+	private:
+		Image* _image = nullptr;
+
+		const float _scale = 1.0f;
+	};
+
+	class SpritesheetSprite : public BaseSprite {
+	public:
+		SpritesheetSprite();
+		SpritesheetSprite(Spritesheet* spritesheet, uint16_t index, float scale = 1.0f);
+		SpritesheetSprite(Spritesheet* spritesheet, Rect rect, float scale = 1.0f);
+
+		void render(vec2 position);
+
+	private:
+		Spritesheet* _spritesheet = nullptr;
+
+		const uint16_t _index = 0;
+		const Rect _rect = Rect();
+		const float _scale = 1.0f;
+
+		const bool _use_index = false;
+	};
+
+	class LineSprite : public BaseSprite {
+	public:
+		LineSprite();
+		LineSprite(Graphics* graphics, const vec2& start, const vec2& end, const Colour& colour);
+		LineSprite(Graphics* graphics, const Rect& rect, const Colour& colour);
+		LineSprite(Graphics* graphics, const std::vector<vec2>& points, const Colour& colour);
+
+		void render(vec2 position);
+
+	private:
+		Graphics* _graphics = nullptr;
+
+		const std::vector<vec2>& _points;
+		const Colour _colour;
+	};
+
+	class CircleSprite : public BaseSprite {
+	public:
+		CircleSprite();
+		CircleSprite(Graphics* graphics, float radius, const Colour& colour);
+
+		void render(vec2 position);
+
+	private:
+		Graphics* _graphics = nullptr;
+
+		const float _radius = 1.0f;
+		const Colour _colour;
+	};
+}

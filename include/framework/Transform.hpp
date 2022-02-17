@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Maths.hpp"
+
 namespace Framework {
 	enum class SpriteTransform {
 		NONE,
@@ -19,4 +21,7 @@ namespace Framework {
 
 		ROTATE_180 = ROTATE_180_ACW
 	};
+
+	ImageFlip transform_to_imageflip(SpriteTransform transform);
+	float transform_to_angle(SpriteTransform transform);
 }

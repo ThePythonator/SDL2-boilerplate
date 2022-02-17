@@ -4,26 +4,24 @@
 
 class TitleStage : public Framework::BaseStage {
 public:
-	TitleStage();
+	void start();
 
-	void update(float dt, Framework::InputHandler& input);
-	void render(Framework::Graphics& graphics);
+	bool update(float dt);
+	void render();
 };
 
 class GameStage : public Framework::BaseStage {
 public:
-	GameStage();
-
-	void update(float dt, Framework::InputHandler& input);
-	void render(Framework::Graphics& graphics);
+	bool update(float dt);
+	void render();
 };
 
 class PausedStage : public Framework::BaseStage {
 public:
 	PausedStage(BaseStage* background_stage);
 
-	void update(float dt, Framework::InputHandler& input);
-	void render(Framework::Graphics& graphics);
+	bool update(float dt);
+	void render();
 
 private:
 	BaseStage* _background_stage;

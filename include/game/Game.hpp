@@ -4,6 +4,8 @@
 
 #include "Stages.hpp"
 
+#include "FadeTransition.hpp"
+
 class Game : public Framework::BaseGame {
 public:
 	Game();

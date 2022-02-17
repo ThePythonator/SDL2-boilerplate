@@ -10,6 +10,6 @@ namespace Framework {
 		vec2 linear(vec2 start, vec2 end, float t);
 
 		// Bezier curve, where t is from 0 to 1
-		vec2 bezier(std::vector<vec2> control_points, float t);
+		vec2 bezier(std::vector<vec2> nodes, float t);
 	}
 }

@@ -14,9 +14,23 @@ namespace Framework {
 			return start + t * (end - start);
 		}
 
-		vec2 bezier(std::vector<vec2> control_points, float t) {
-			// TODO
-			return control_points[0];
+		vec2 bezier(std::vector<vec2> nodes, float t) {
+			if (nodes.size() == 0) {
+				// No control points, just default to (0,0)
+				return VEC_NULL;
+			}
+			else if (nodes.size() == 1) {
+				// Only one node so we return it (end of recursion)
+				return nodes[0];
+			}
+
+			std::vector<vec2> new_nodes;
+
+			for (uint8_t i = 0; i < nodes.size() - 1; i++) {
+				new_nodes.push_back(linear(nodes[i], nodes[i + 1], t));
+			}
+
+			return bezier(new_nodes, t);
 		}
 	}
 }

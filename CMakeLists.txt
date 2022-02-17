@@ -39,30 +39,36 @@ set(FRAMEWORK_SOURCES
 	"BaseGame.cpp"
 	
 	"BaseStage.cpp"
+	"BaseTransition.cpp"
+
+	"FadeTransition.cpp"
 	
 	"Input.cpp"
 	"Keys.cpp"
 	"Mouse.cpp"
+
+	"Button.cpp"
 	
 	"Audio.cpp"
 	"Sound.cpp"
 	
 	"Graphics.cpp"
-#	"Text.cpp"
-#	"Spritesheet.cpp"
+	"Font.cpp"
 	"Image.cpp"
+	"Spritesheet.cpp"
+
 	"Colour.cpp"
 
-	"File.cpp"
-	
-#	"Curves.cpp"
-)
+	"Maths.cpp"
+	"Transform.cpp"
 
-if(32BLIT_HW)
-	list(APPEND FRAMEWORK_SOURCES "32BlitExtras.cpp") # 32BLIT_HW not properly supported
-else()
-	list(APPEND FRAMEWORK_SOURCES "SDLUtils.cpp")
-endif()
+	"Timer.cpp"
+	"Curves.cpp"
+
+	"File.cpp"
+
+	"SDLUtils.cpp"
+)
 
 list(TRANSFORM GAME_SOURCES PREPEND src/game/)
 list(TRANSFORM FRAMEWORK_SOURCES PREPEND src/framework/)
@@ -141,7 +147,7 @@ install(DIRECTORY ${PROJECT_ASSETS}
 
 if (UNIX AND NOT APPLE)
 	# Todo: auto-gen this file using current PROJECT_NAME
-    install(FILES APoS_Launcher_Linux.sh
+    install(FILES Launcher_Linux.sh
 	    DESTINATION .
     )
 endif()

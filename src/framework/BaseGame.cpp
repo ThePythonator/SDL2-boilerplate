@@ -12,7 +12,9 @@ namespace Framework {
 		}
 
 		// Allow game to get ready
+		// Game must set stage ptr
 		start();
+		stage->init(&graphics_objects, &input);
 
 		// Main game loop
 		bool running = true;
@@ -34,7 +36,7 @@ namespace Framework {
 	// This is due to SDL working in milliseconds, so we can't do any better than 1000/17 = 111 fps or 1000/8 = 125 fps
 	bool BaseGame::main_loop() {
 		// Get start time
-		float start_time = SDL_GetTicks();
+		uint32_t start_time = SDL_GetTicks();
 
 		// 'Calculate' dt
 		//float dt = WINDOW::TARGET_DT;
@@ -64,12 +66,12 @@ namespace Framework {
 			}
 		}
 
-		update(dt);
+		bool running = update(dt);
 
 		// Clear the screen
 		/*SDLUtils::SDL_SetRenderDrawColor(renderer, COLOURS::BLACK);
 		SDL_RenderClear(renderer);*/
-		graphics.fill(COLOURS::BLACK);
+		graphics_objects.graphics_ptr->fill(COLOURS::BLACK);
 
 		// Render game
 		render();
@@ -78,8 +80,8 @@ namespace Framework {
 		SDL_RenderPresent(renderer);
 
 		// If we were too quick, sleep!
-		float end_time = SDL_GetTicks();
-		float difference = end_time - start_time;
+		uint32_t end_time = SDL_GetTicks();
+		uint32_t difference = end_time - start_time;
 		int ticks_to_sleep = static_cast<int>(WINDOW::TARGET_DT * 1000.0f) - difference;
 		if (ticks_to_sleep > 0) {
 			SDL_Delay(ticks_to_sleep);
@@ -87,20 +89,33 @@ namespace Framework {
 
 		//printf("FPS: %f\n", 1.0f / dt);
 
-		return true;
+		return running;
 	}
 
-	void BaseGame::update(float dt) {
+	bool BaseGame::update(float dt) {
 		if (stage->finished()) {
-			BaseStage* temp_stage = stage->next();
-			delete stage;
-			stage = temp_stage;
+			// Allow user to clear up anything
+			stage->end();
+
+			if (stage->delete_me()) {
+				BaseStage* temp_stage = stage->next();
+				delete stage;
+				stage = temp_stage;
+			}
+			else {
+				stage = stage->next();
+			}
+			
+			// Setup next stage
+			stage->init(&graphics_objects, &input);
 		}
-		stage->update(dt, input);
+
+		bool running = stage->update(dt);
+		return running;
 	}
 
 	void BaseGame::render() {
-		stage->render(graphics);
+		stage->render();
 	}
 
 	bool BaseGame::init() {
@@ -109,10 +124,17 @@ namespace Framework {
 			return false;
 		}
 
+		graphics_objects.graphics_ptr = new Graphics();
+		graphics_objects.graphics_ptr->set_renderer(renderer);
+
+		// Set up graphics_objects vectors:
+		graphics_objects.image_ptrs = std::vector<Framework::Image*>(GRAPHICS_OBJECTS::IMAGES::TOTAL_IMAGES);
+		graphics_objects.spritesheet_ptrs = std::vector<Framework::Spritesheet*>(GRAPHICS_OBJECTS::SPRITESHEETS::TOTAL_SPRITESHEETS);
+		graphics_objects.font_ptrs = std::vector<Framework::Font*>(GRAPHICS_OBJECTS::FONTS::TOTAL_FONTS);
+		graphics_objects.transition_ptrs = std::vector<Framework::BaseTransition*>(GRAPHICS_OBJECTS::TRANSITIONS::TOTAL_TRANSITIONS);
+
 		// Load game data
 		load_data();
-
-		graphics.set_renderer(renderer);
 
 		return true;
 	}
@@ -120,5 +142,37 @@ namespace Framework {
 	void BaseGame::quit() {
 		// Clear game data
 		clear_data();
+
+		// Clear graphics objects stuff
+
+		// Clear spritesheets
+		for (Framework::Spritesheet* spritesheet_ptr : graphics_objects.spritesheet_ptrs) {
+			delete spritesheet_ptr;
+		}
+		graphics_objects.spritesheet_ptrs.clear();
+
+		// Clear images
+		for (Framework::Image* image_ptr : graphics_objects.image_ptrs) {
+			image_ptr->free();
+			delete image_ptr;
+		}
+		graphics_objects.image_ptrs.clear();
+
+		// Clear fonts
+		for (Framework::Font* font_ptr : graphics_objects.font_ptrs) {
+			delete font_ptr;
+		}
+		graphics_objects.font_ptrs.clear();
+
+		// Clear transitions
+		for (Framework::BaseTransition* transition_ptr : graphics_objects.transition_ptrs) {
+			delete transition_ptr;
+		}
+		graphics_objects.transition_ptrs.clear();
+
+		
+		// Destroy renderer and window
+		SDL_DestroyRenderer(renderer);
+		SDL_DestroyWindow(window);
 	}
 }

@@ -28,8 +28,8 @@ namespace Framework::SDLUtils {
 			WINDOW::TITLE,
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
-			WINDOW::WIDTH,
-			WINDOW::HEIGHT,
+			WINDOW::SIZE.x,
+			WINDOW::SIZE.y,
 			SDL_WINDOW_SHOWN
 		);
 
@@ -42,8 +42,70 @@ namespace Framework::SDLUtils {
 		return renderer != nullptr && window != nullptr;
 	}
 
+	std::string find_assets_path(std::string test_file, uint8_t depth) {
+		printf("Attempting to find assets folder...\n");
+
+		std::string base_path = SDL_GetBasePath();
+
+		SDL_Surface* test_surface = IMG_Load(("assets/" + test_file).c_str());
+
+		if (test_surface != NULL) {
+			base_path = "";
+		}
+
+		uint8_t count = 0;
+		while (test_surface == NULL && count < depth) {
+			test_surface = IMG_Load((base_path + "assets/" + test_file).c_str());
+
+			if (test_surface == NULL) {
+				base_path += "../";
+			}
+
+			count++;
+		}
+
+		if (test_surface == NULL) {
+			printf("Could not find assets folder!\n");
+			return "assets/";
+		}
+
+		SDL_FreeSurface(test_surface);
+
+		std::string message = "Found assets folder: " + base_path + "assets/\n\n";
+
+		printf("%s", message.c_str());
+
+		return base_path + "assets/";
+	}
+
 	int SDL_SetRenderDrawColor(SDL_Renderer* renderer, const Colour& colour) {
 		return SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
+	}
+
+	void SDL_SetTextureColorMod(SDL_Texture* texture, const Colour& colour) {
+		SDL_SetTextureColorMod(texture, colour.r, colour.g, colour.b);
+	}
+
+	void SDL_SetPixel(SDL_Surface* surface, int x, int y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+		SDL_LockSurface(surface);
+		((uint32_t*)surface->pixels)[y * surface->w + x] = SDL_MapRGBA(surface->format, r, g, b, a);
+		SDL_UnlockSurface(surface);
+	}
+
+	void SDL_SetPixel(SDL_Surface* surface, int x, int y, const Colour& colour) {
+		SDL_SetPixel(surface, x, y, colour.r, colour.g, colour.b, colour.a);
+	}
+
+	void SDL_GetPixel(SDL_Surface* surface, int x, int y, uint8_t* r, uint8_t* g, uint8_t* b, uint8_t* a) {
+		SDL_LockSurface(surface);
+		SDL_GetRGBA(((uint32_t*)surface->pixels)[y * surface->w + x], surface->format, r, g, b, a);
+		SDL_UnlockSurface(surface);
+	}
+
+	Colour SDL_GetPixel(SDL_Surface* surface, int x, int y) {
+		uint8_t r, g, b, a;
+		SDL_GetPixel(surface, x, y, &r, &g, &b, &a);
+		return Colour(r, g, b, a);
 	}
 
 	int SDL_RenderDrawCircle(SDL_Renderer* renderer, int x, int y, int radius) {
@@ -85,5 +147,24 @@ namespace Framework::SDLUtils {
 		}
 
 		return status;
+	}
+
+	SDL_Rect get_sdl_rect(Rect rect) {
+		SDL_Rect sdl_rect{ static_cast<int>(rect.position.x), static_cast<int>(rect.position.y), static_cast<int>(rect.size.x), static_cast<int>(rect.size.y) };
+		return sdl_rect;
+	}
+
+	SDL_Point get_sdl_point(vec2 vec) {
+		SDL_Point sdl_point{ static_cast<int>(vec.x), static_cast<int>(vec.y) };
+		return sdl_point;
+	}
+
+	SDL_RendererFlip get_sdl_renderer_flip(ImageFlip flip) {
+		uint8_t sdl_flip = SDL_FLIP_NONE;
+
+		if (flip & ImageFlip::FLIP_HORIZONTAL) sdl_flip |= SDL_FLIP_HORIZONTAL;
+		if (flip & ImageFlip::FLIP_VERTICAL) sdl_flip |= SDL_FLIP_HORIZONTAL;
+
+		return static_cast<SDL_RendererFlip>(sdl_flip);
 	}
 }

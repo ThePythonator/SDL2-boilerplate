@@ -24,7 +24,7 @@ namespace Framework {
 		bool just_up(MouseHandler::MouseButton button); // Returns true if JUST_RELEASED
 		bool just_down(MouseHandler::MouseButton button); // Returns true if JUST_PRESSED
 
-		vec2 mouse_position();
+		MouseHandler::Mouse* get_mouse();
 
 	private:
 		KeyHandler::KeyUnion key_data;
