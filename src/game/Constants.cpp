@@ -4,7 +4,7 @@ namespace WINDOW {
 	const Framework::vec2 SIZE = Framework::vec2{ 1024, 768 };
 	const Framework::vec2 SIZE_HALF = SIZE / 2;
 
-	const char* TITLE = "Bucket, Inc.";
+	const char* TITLE = "Your Game";
 
 	const float TARGET_FPS = 60.0f;
 	const float TARGET_DT = 1.0f / TARGET_FPS;
