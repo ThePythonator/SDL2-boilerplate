@@ -6,10 +6,14 @@ void TitleStage::start() {
 	// Start transition
 	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
 	transition->open();
+
+	// Start timer used for rotations
+	_timer.start();
 }
 
 bool TitleStage::update(float dt) {
 	transition->update(dt);
+	_timer.update(dt);
 
 	// Update buttons
 	for (Framework::Button& button : buttons) {
@@ -53,9 +57,10 @@ void TitleStage::render() {
 
 	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(0, Framework::Vec(64, 48));
 
+	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(2, Framework::Vec(16, 48));
 	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(2, Framework::Vec(32, 48), Framework::SpriteTransform::ROTATE_90_ACW);
 
-	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(1, Framework::Vec(96, 48), SPRITE::SCALE, SDL_GetTicks() / 10);
+	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(1, Framework::Vec(96, 48), SPRITE::SCALE, _timer.time() * 90);
 
 	transition->render(graphics_objects->graphics_ptr);
 }

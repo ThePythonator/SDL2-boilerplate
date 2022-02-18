@@ -14,6 +14,7 @@ namespace Framework {
 		};
 
 		BaseTransition();
+		virtual ~BaseTransition();
 
 		virtual void update(float dt) = 0;
 		virtual void render(Graphics* graphics) = 0;

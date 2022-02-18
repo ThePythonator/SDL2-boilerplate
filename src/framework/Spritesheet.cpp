@@ -142,9 +142,9 @@ namespace Framework {
 
 	// LineSprite
 
-	LineSprite::LineSprite() : _points({}) { }
-	LineSprite::LineSprite(Graphics* graphics, const vec2& start, const vec2& end, const Colour& colour) : _graphics(graphics), _points({ start, end }), _colour(colour) { }
-	LineSprite::LineSprite(Graphics* graphics, const Rect& rect, const Colour& colour) : _graphics(graphics), _points({ rect.topleft(), rect.topright(), rect.bottomright(), rect.bottomleft() }), _colour(colour) { }
+	LineSprite::LineSprite() : _points{} { }
+	LineSprite::LineSprite(Graphics* graphics, const vec2& start, const vec2& end, const Colour& colour) : _graphics(graphics), _points{ start, end }, _colour(colour) { }
+	LineSprite::LineSprite(Graphics* graphics, const Rect& rect, const Colour& colour) : _graphics(graphics), _points{ rect.topleft(), rect.topright(), rect.bottomright(), rect.bottomleft() }, _colour(colour) { }
 	LineSprite::LineSprite(Graphics* graphics, const std::vector<vec2>& points, const Colour& colour) : _graphics(graphics), _points(points), _colour(colour) { }
 
 	void LineSprite::render(vec2 position) {

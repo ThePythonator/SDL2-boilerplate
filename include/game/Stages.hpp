@@ -8,6 +8,9 @@ public:
 
 	bool update(float dt);
 	void render();
+
+private:
+	Framework::Timer _timer;
 };
 
 class GameStage : public Framework::BaseStage {

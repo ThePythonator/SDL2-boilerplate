@@ -9,6 +9,7 @@ namespace Framework {
 	class BaseStage {
 	public:
 		BaseStage();
+		virtual ~BaseStage();
 
 		virtual void start();
 		virtual void end();

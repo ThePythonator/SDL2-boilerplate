@@ -4,6 +4,9 @@ namespace Framework {
 	BaseStage::BaseStage() {
 
 	}
+	BaseStage::~BaseStage() {
+
+	}
 
 	void BaseStage::start() {
 

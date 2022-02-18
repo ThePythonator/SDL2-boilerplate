@@ -4,6 +4,9 @@ namespace Framework {
 	BaseTransition::BaseTransition() {
 
 	}
+	BaseTransition::~BaseTransition() {
+
+	}
 
 	bool BaseTransition::is_open() {
 		return _state == TransitionState::OPEN;
