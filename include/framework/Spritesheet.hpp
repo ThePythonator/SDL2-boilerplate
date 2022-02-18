@@ -100,7 +100,7 @@ namespace Framework {
 	private:
 		Graphics* _graphics = nullptr;
 
-		const std::vector<vec2>& _points;
+		const std::vector<vec2> _points;
 		const Colour _colour;
 	};
 
