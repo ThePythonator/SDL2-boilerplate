@@ -6,8 +6,10 @@
 namespace Framework {
 	class Spritesheet {
 	public:
+		static const uint8_t DEFAULT_SPRITE_SIZE = 16;
+
 		Spritesheet();
-		Spritesheet(Graphics* graphics, Image* spritesheet_image, uint8_t sprite_size = 16, uint8_t default_scale = 1, bool scale_positions = true);
+		Spritesheet(Image* spritesheet_image, uint8_t sprite_size = 16, uint8_t default_scale = 1, bool scale_positions = true);
 
 		void sprite(uint16_t index, vec2 position, SpriteTransform transform = SpriteTransform::NONE);
 		void sprite(uint16_t index, float x, float y, SpriteTransform transform = SpriteTransform::NONE);
@@ -30,13 +32,7 @@ namespace Framework {
 
 		Image* get_image();
 
-		//void set_blend_mode(SDL_BlendMode blending);
-		//void set_alpha(uint8_t alpha);
-
-		//uint8_t get_alpha();
-
 	private:
-		//Graphics* _graphics = nullptr; // Note that now it appears we don't even need this
 		Image* _spritesheet_image = nullptr;
 
 		uint32_t _w = 0;
@@ -44,7 +40,7 @@ namespace Framework {
 		uint8_t _rows = 0;
 		uint8_t _columns = 0;
 
-		uint8_t _sprite_size = 16;
+		uint8_t _sprite_size = DEFAULT_SPRITE_SIZE;
 		uint8_t _default_scale = 1;
 
 		bool _scale_positions = false;
@@ -55,6 +51,8 @@ namespace Framework {
 		BaseSprite();
 
 		virtual void render(vec2 position) = 0;
+
+		virtual Rect bounding_rect(vec2 position) = 0;
 	};
 
 	class ImageSprite : public BaseSprite {
@@ -63,6 +61,8 @@ namespace Framework {
 		ImageSprite(Image* image, float scale = 1.0f);
 
 		void render(vec2 position);
+
+		Rect bounding_rect(vec2 position);
 
 	private:
 		Image* _image = nullptr;
@@ -77,6 +77,8 @@ namespace Framework {
 		SpritesheetSprite(Spritesheet* spritesheet, Rect rect, float scale = 1.0f);
 
 		void render(vec2 position);
+
+		Rect bounding_rect(vec2 position);
 
 	private:
 		Spritesheet* _spritesheet = nullptr;
@@ -97,6 +99,8 @@ namespace Framework {
 
 		void render(vec2 position);
 
+		Rect bounding_rect(vec2 position);
+
 	private:
 		Graphics* _graphics = nullptr;
 
@@ -110,6 +114,8 @@ namespace Framework {
 		CircleSprite(Graphics* graphics, float radius, const Colour& colour);
 
 		void render(vec2 position);
+
+		Rect bounding_rect(vec2 position);
 
 	private:
 		Graphics* _graphics = nullptr;

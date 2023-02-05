@@ -1,7 +1,7 @@
 #include "FadeTransition.hpp"
 
 namespace Framework {
-	FadeTransition::FadeTransition(Colour colour, float fade_time, uint8_t max_alpha, uint8_t min_alpha) {
+	FadeTransition::FadeTransition(Graphics* graphics, Colour colour, float fade_time, uint8_t max_alpha, uint8_t min_alpha) : BaseTransition(graphics) {
 		_colour = colour;
 
 		_fade_time = fade_time;
@@ -20,22 +20,22 @@ namespace Framework {
 		}
 	}
 
-	void FadeTransition::render(Graphics* graphics) {
+	void FadeTransition::render() {
 		// Handle fading
 		switch (_state) {
 		case TransitionState::CLOSED:
 			// Fill with solid colour
-			graphics->fill(_colour, _max);
+			_graphics->fill(_colour, _max);
 			break;
 
 		case TransitionState::CLOSING:
 			// Fade out
-			graphics->fill(_colour, Framework::Curves::linear(_min, _max, percent()));
+			_graphics->fill(_colour, Framework::Curves::linear(_min, _max, percent()));
 			break;
 
 		case TransitionState::OPENING:
 			// Fade in
-			graphics->fill(_colour, Framework::Curves::linear(_max, _min, percent()));
+			_graphics->fill(_colour, Framework::Curves::linear(_max, _min, percent()));
 			break;
 
 		default:

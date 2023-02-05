@@ -60,9 +60,9 @@ void TitleStage::render() {
 	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(2, Framework::Vec(16, 48));
 	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(2, Framework::Vec(32, 48), Framework::SpriteTransform::ROTATE_90_ACW);
 
-	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(1, Framework::Vec(96, 48), SPRITE::SCALE, _timer.time() * 90);
+	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(1, Framework::Vec(96, 48), SPRITES::SCALE, _timer.time() * 90);
 
-	transition->render(graphics_objects->graphics_ptr);
+	transition->render();
 }
 
 // GameStage
@@ -74,7 +74,7 @@ bool GameStage::update(float dt) {
 }
 
 void GameStage::render() {
-	transition->render(graphics_objects->graphics_ptr);
+	transition->render();
 }
 
 // PausedStage

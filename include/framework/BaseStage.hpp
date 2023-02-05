@@ -11,7 +11,9 @@ namespace Framework {
 		BaseStage();
 		virtual ~BaseStage();
 
+		// Called when stage becomes the current stage
 		virtual void start();
+		// Called when stage stops being the current stage
 		virtual void end();
 
 		virtual bool update(float dt) = 0;
@@ -22,7 +24,9 @@ namespace Framework {
 		bool finished();
 		bool delete_me();
 
-		void init(GraphicsObjects* _graphics_objects, InputHandler* _input);
+		// Called only once. Override and use instead of constructor if you need access to graphics_objects or input
+		// If this is overriden, make sure to call this at the start of the deriving function
+		virtual void init(GraphicsObjects* _graphics_objects, InputHandler* _input);
 
 		void set_transition(BaseTransition* _transition);
 		void clear_transition();
@@ -31,7 +35,7 @@ namespace Framework {
 		void finish(BaseStage* next, bool can_delete_me = true);
 
 		std::vector<Framework::Button> buttons;
-		uint8_t button_selected = BUTTONS::NONE;
+		uint8_t button_selected = BUTTON_NONE_SELECTED;
 
 		GraphicsObjects* graphics_objects = nullptr;
 		InputHandler* input = nullptr;

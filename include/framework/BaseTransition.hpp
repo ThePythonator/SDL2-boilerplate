@@ -14,16 +14,20 @@ namespace Framework {
 		};
 
 		BaseTransition();
+		BaseTransition(Graphics* graphics);
 		virtual ~BaseTransition();
 
 		virtual void update(float dt) = 0;
-		virtual void render(Graphics* graphics) = 0;
+		virtual void render() = 0;
 
 		// Return the percentage completion of the current transition (from 0 to 1)
 		virtual float percent() = 0;
 
 		void open();
 		void close();
+
+		void set_open();
+		void set_closed();
 
 		bool is_open();
 		bool is_closed();
@@ -32,6 +36,8 @@ namespace Framework {
 
 
 	protected:
+		Graphics* _graphics = nullptr;
+
 		TransitionState _state = TransitionState::OPEN;
 		Timer _timer;
 	};

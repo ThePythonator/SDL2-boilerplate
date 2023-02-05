@@ -161,7 +161,7 @@ namespace Framework {
 
 
 		void set_key(KeyUnion& key_handler, Key key, KeyState key_state) {
-			key_handler.key_array[(uint8_t)key] = key_state;
+			key_handler.key_array[static_cast<uint8_t>(key)] = key_state;
 		}
 	}
 }

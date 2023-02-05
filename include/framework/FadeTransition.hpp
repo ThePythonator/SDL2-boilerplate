@@ -6,10 +6,10 @@
 namespace Framework {
 	class FadeTransition : public BaseTransition {
 	public:
-		FadeTransition(Colour colour, float fade_time, uint8_t max_alpha = 0xFF, uint8_t min_alpha = 0x00);
+		FadeTransition(Graphics* graphics, Colour colour, float fade_time, uint8_t max_alpha = 0xFF, uint8_t min_alpha = 0x00);
 
 		void update(float dt);
-		void render(Graphics* graphics);
+		void render();
 
 		// Only meaningful when OPENING/CLOSING
 		float percent();
@@ -20,6 +20,6 @@ namespace Framework {
 
 		float _fade_time = 0.0f;
 
-		Colour _colour = COLOURS::BLACK;
+		Colour _colour;
 	};
 }

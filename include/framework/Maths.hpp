@@ -23,10 +23,12 @@ namespace Framework {
 	// extern const float EPSILON;
 
 	extern const vec2 VEC_NULL;
+	extern const vec2 VEC_ONES;
 
 	class Rect {
 	public:
 		Rect(vec2 _position = VEC_NULL, vec2 _size = VEC_NULL);
+		Rect(vec2 _position, int _size);
 		Rect(float x, float y, float width = 0.0f, float height = 0.0f);
 		Rect(int x, int y, int width = 0, int height = 0);
 
@@ -78,4 +80,9 @@ namespace Framework {
 	* Resolution is 0.001f.
 	*/
 	float randf();
+
+	/*
+	* Generates a random float between min and max inclusive.
+	*/
+	float randf(float min, float max);
 }

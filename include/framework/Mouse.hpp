@@ -36,15 +36,23 @@ namespace Framework {
 
 			vec2 position();
 			MouseButtonState button_state(MouseButton button);
-			bool pressed(MouseButton button);
+			bool pressed(MouseButton button = MouseButton::LEFT);
 
 			void update();
 			void update_mouse(const SDL_Event& sdl_event);
 
 			void set_cursor(bool visible);
 
+			vec2 distance_moved();
+			vec2 distance_dragged(MouseButton button = MouseButton::LEFT);
+
+			// Horizontal scrolling is ignored.
+			float scroll_amount();
+
 		private:
-			vec2 _position;
+			vec2 _position, _distance_moved;
+			float _scroll_amount = 0.0f; // TODO: This maybe should be an int?
+
 			MouseButtonUnion _buttons;
 		};
 	}

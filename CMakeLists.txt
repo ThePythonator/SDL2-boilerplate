@@ -4,8 +4,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Uncomment these to put the dlls in the same directory as the executable (useful if you don't have SDL2 installed and you're building from source)
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Uncomment if you need to do some debugging :)
 # set(CMAKE_FIND_DEBUG_MODE TRUE)
@@ -19,8 +19,6 @@ set(GAME_SOURCES
 	"Game.cpp"
 
 	"Stages.cpp"
-
-	"Constants.cpp"
 )
 
 # To be used instead of set(GAME_SOURCES ...)
@@ -50,9 +48,10 @@ set(FRAMEWORK_SOURCES
 	"Button.cpp"
 	
 	"Audio.cpp"
-	"Sound.cpp"
 	
 	"Graphics.cpp"
+	"Window.cpp"
+
 	"Font.cpp"
 	"Image.cpp"
 	"Spritesheet.cpp"
@@ -66,6 +65,7 @@ set(FRAMEWORK_SOURCES
 	"Curves.cpp"
 
 	"File.cpp"
+	"URL.cpp"
 
 	"SDLUtils.cpp"
 )
@@ -126,7 +126,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/external)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 # Link
-target_link_libraries(${PROJECT_NAME} SDL2::SDL2main SDL2::SDL2 SDL2::image nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} SDL2::SDL2main SDL2::SDL2 SDL2::image SDL2::mixer nlohmann_json::nlohmann_json)
 
 
 # Setup release packages
@@ -143,11 +143,12 @@ install(DIRECTORY ${PROJECT_ASSETS}
     DESTINATION ${ASSETS_DEST}
     FILES_MATCHING
     PATTERN "*.png"
+    PATTERN "*.json"
 )
 
 if (UNIX AND NOT APPLE)
 	# Todo: auto-gen this file using current PROJECT_NAME
-    install(FILES Launcher_Linux.sh
+    install(FILES extras/Launcher_Linux.sh
 	    DESTINATION .
     )
 endif()
@@ -161,7 +162,7 @@ if (NOT EMSCRIPTEN)
     endif()
 
     if(TARGET SDL2_image)
-        list(APPEND DEP_SEARCH_DIRS $<TARGET_FILE_DIR:SDL2_image> $<TARGET_FILE_DIR:png> $<TARGET_FILE_DIR:zlib>)
+        list(APPEND DEP_SEARCH_DIRS $<TARGET_FILE_DIR:SDL2_image>)# $<TARGET_FILE_DIR:png> $<TARGET_FILE_DIR:zlib>)
     endif()
 
     set(EXE_SUFFIX)

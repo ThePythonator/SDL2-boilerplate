@@ -5,6 +5,7 @@ namespace Framework {
 		key_data.keys = { KeyHandler::KeyState::STILL_UP };
 	}
 
+	// Need to call this before handle_sdl_event
 	void InputHandler::update() {
 		KeyHandler::update(key_data);
 		mouse.update();
@@ -37,15 +38,11 @@ namespace Framework {
 	}
 
 	bool InputHandler::is_up(MouseHandler::MouseButton button) {
-		MouseHandler::MouseButtonState button_state = mouse.button_state(button);
-		return button_state == MouseHandler::MouseButtonState::STILL_UP || button_state == MouseHandler::MouseButtonState::JUST_RELEASED;
+		return !mouse.pressed(button);
 	}
 
 	bool InputHandler::is_down(MouseHandler::MouseButton button) {
-		// ALT: 
-		// return mouse.pressed(button);
-		MouseHandler::MouseButtonState button_state = mouse.button_state(button);
-		return button_state == MouseHandler::MouseButtonState::STILL_DOWN || button_state == MouseHandler::MouseButtonState::JUST_PRESSED;
+		return mouse.pressed(button);
 	}
 
 	bool InputHandler::just_up(MouseHandler::MouseButton button) {

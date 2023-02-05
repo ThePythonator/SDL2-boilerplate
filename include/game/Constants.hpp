@@ -9,15 +9,15 @@
 #include "Maths.hpp"
 
 namespace WINDOW {
-	extern const Framework::vec2 SIZE;
-	extern const Framework::vec2 SIZE_HALF;
-	
-	extern const char* TITLE;
+	const Framework::vec2 SIZE = Framework::vec2{ 1024, 768 };
+	const Framework::vec2 SIZE_HALF = SIZE / 2;
 
-	extern const float TARGET_FPS;
-	extern const float TARGET_DT;
+	const std::string TITLE = "Your Game";
 
-	extern const float MAX_DT;
+	const float TARGET_FPS = 60.0f;
+	const float TARGET_DT = 1.0f / TARGET_FPS;
+
+	const float MAX_DT = 0.05f;
 }
 
 namespace STRINGS {
@@ -25,13 +25,13 @@ namespace STRINGS {
 }
 
 namespace PATHS {
-	extern const uint8_t DEPTH;
+	const uint8_t DEPTH = 4;
 
 	namespace IMAGES {
-		extern const std::string LOCATION;
+		const std::string LOCATION = "assets/images/";
 
-		extern const std::string MAIN_SPRITESHEET;
-		extern const std::string FONT_SPRITESHEET;
+		const std::string MAIN_SPRITESHEET = "demo_spritesheet.png";
+		const std::string FONT_SPRITESHEET = "font.png";
 	}
 
 	namespace SAVE_DATA {
@@ -40,7 +40,7 @@ namespace PATHS {
 }
 
 namespace GRAPHICS_OBJECTS {
-	// enum inside its own namespace allows multiple repeated names in the enums, without needing enum class and all the casting
+	// Putting an enum in its own namespace is a bit hacky, but allows automatic casting, without needing enum class and all the manual casting.
 	namespace IMAGES {
 		enum IMAGES {
 			MAIN_SPRITESHEET,
@@ -77,38 +77,39 @@ namespace GRAPHICS_OBJECTS {
 
 namespace FONTS {
 	namespace SIZE {
-		extern const uint8_t MAIN_FONT;
+		const uint8_t MAIN_FONT = 16;
 	}
 
 	namespace SCALE {
-		extern const uint8_t MAIN_FONT;
+		const uint8_t MAIN_FONT = 4;
 	}
 
 	namespace SPACING {
-		extern const uint8_t MAIN_FONT;
+		const uint8_t MAIN_FONT = 1;
 	}
 }
+
 namespace COLOURS {
-	extern const Framework::Colour BLACK;
-	extern const Framework::Colour WHITE;
+	const Framework::Colour BLACK{ 0x00, 0x00, 0x00 };
+	const Framework::Colour WHITE{ 0xFF, 0xFF, 0xFF };
 }
 
 namespace TIMINGS {
-	
+
 }
 
 namespace TRANSITIONS {
-	extern const float FADE_TIME;
+	const float FADE_TIME = 1.0f;
 }
 
-namespace SPRITE {
-	extern const uint8_t SIZE;
-	extern const uint8_t SIZE_HALF;
-	extern const uint8_t SCALE;
-	extern const uint8_t UI_SCALE;
+namespace SPRITES {
+	const uint8_t SIZE = 16;
+	const uint8_t SIZE_HALF = SIZE / 2;
+	const uint8_t SCALE = 4;
+	const uint8_t UI_SCALE = 4;
 
 	namespace INDEX {
-		
+
 	}
 }
 
@@ -119,7 +120,7 @@ namespace CURVES {
 }
 
 namespace BUTTONS {
-	extern const uint8_t NONE;
+	// NONE = 255, but this is defined as BUTTON_NONE_SELECTED in Button.hpp
 
 	namespace TITLE {
 		enum TITLE {

@@ -15,8 +15,7 @@ namespace Framework {
 	Font::Font() {
 
 	}
-	Font::Font(Graphics* graphics, Spritesheet* spritesheet, uint8_t spacing) {
-		graphics_ptr = graphics;
+	Font::Font(Spritesheet* spritesheet, uint8_t spacing) {
 		font_spritesheet_ptr = spritesheet;
 		_spacing = spacing;
 
@@ -200,20 +199,61 @@ namespace Framework {
 		_scale = scale;
 	}
 
-	void Text::render(vec2 position) {
+	void Text::render(vec2 position) const {
 		render(position, _colour, _anchor);
 	}
-	void Text::render(vec2 position, Colour colour) {
+	void Text::render(vec2 position, Colour colour) const {
 		render(position, colour, _anchor);
 	}
-	void Text::render(vec2 position, Font::AnchorPosition anchor_position) {
+	void Text::render(vec2 position, Font::AnchorPosition anchor_position) const {
 		render(position, _colour, anchor_position);
 	}
-	void Text::render(vec2 position, Colour colour, Font::AnchorPosition anchor_position) {
+	void Text::render(vec2 position, Colour colour, Font::AnchorPosition anchor_position) const {
 		_font_ptr->render_text(_text, position, colour, _scale, anchor_position);
 	}
 
 	void Text::set_text(std::string text) {
 		_text = text;
+	}
+	std::string Text::get_text() const {
+		return _text;
+	}
+
+
+	// String manipulation functions
+
+	std::string trim_precision(std::string string, uint8_t precision) {
+		// Trim string to precision
+		if (precision <= 0) {
+			// Assume trimming all after decimal place
+			return string.substr(0, string.find('.'));
+		}
+		else {
+			return string.substr(0, string.find('.') + precision + 1);
+		}
+	}
+	// Not sure if both of these functions are needed since they have identical definitions:
+	std::string trim_precision(float num, uint8_t precision) {
+		return trim_precision(std::to_string(num), precision);
+	}
+	std::string trim_precision(double num, uint8_t precision) {
+		return trim_precision(std::to_string(num), precision);
+	}
+
+	std::string normalise_magnitude(double num, uint8_t precision, std::string suffix) {
+		if (num >= 1e9) {
+			num /= 1e9;
+			suffix = "G" + suffix;
+		}
+		else if (num >= 1e6) {
+			num /= 1e6;
+			suffix = "M" + suffix;
+		}
+		else if (num >= 1e3) {
+			num /= 1e3;
+			suffix = "k" + suffix;
+		}
+
+		return trim_precision(num, precision) + suffix;
 	}
 }

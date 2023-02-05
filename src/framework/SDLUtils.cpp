@@ -2,11 +2,12 @@
 
 namespace Framework::SDLUtils {
 
-	bool init_sdl(SDL_Window*& window, SDL_Renderer*& renderer) {
+	bool init_sdl(SDL_Window*& window, SDL_Renderer*& renderer, const std::string& title, const vec2& size) {
 		// Initialise SDL
 		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		{
 			printf("SDL could not initialize!\nSDL Error: %s\n", SDL_GetError());
+			SDL_ClearError();
 			return false;
 		}
 
@@ -14,6 +15,7 @@ namespace Framework::SDLUtils {
 		int img_init_flags = IMG_INIT_JPG | IMG_INIT_PNG;
 		if ((IMG_Init(img_init_flags) & img_init_flags) != img_init_flags) {
 			printf("SDL_IMG could not initialize!\nSDL_IMG Error: %s\n", IMG_GetError());
+			IMG_SetError("");
 			return false;
 		}
 
@@ -25,12 +27,12 @@ namespace Framework::SDLUtils {
 
 		// Create window
 		window = SDL_CreateWindow(
-			WINDOW::TITLE,
+			title.c_str(),
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
-			WINDOW::SIZE.x,
-			WINDOW::SIZE.y,
-			SDL_WINDOW_SHOWN
+			size.x,
+			size.y,
+			SDL_WINDOW_SHOWN // Not sure if this is needed: it could be 0 instead?
 		);
 
 		// Create renderer for window
@@ -39,15 +41,18 @@ namespace Framework::SDLUtils {
 		// Set renderer mode
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
+		// Set scaling so that fullscreen mode is actually the same logical resolution
+		SDL_RenderSetLogicalSize(renderer, size.x, size.y);
+
 		return renderer != nullptr && window != nullptr;
 	}
 
-	std::string find_assets_path(std::string test_file, uint8_t depth) {
-		printf("Attempting to find assets folder...\n");
+	std::string find_base_directory(std::string test_file, uint8_t depth) {
+		printf("Attempting to find base directory...\n");
 
 		std::string base_path = SDL_GetBasePath();
 
-		SDL_Surface* test_surface = IMG_Load(("assets/" + test_file).c_str());
+		SDL_Surface* test_surface = IMG_Load(test_file.c_str());
 
 		if (test_surface != NULL) {
 			base_path = "";
@@ -55,7 +60,9 @@ namespace Framework::SDLUtils {
 
 		uint8_t count = 0;
 		while (test_surface == NULL && count < depth) {
-			test_surface = IMG_Load((base_path + "assets/" + test_file).c_str());
+			printf("Trying path: %s\n", (base_path + test_file).c_str());
+
+			test_surface = IMG_Load((base_path + test_file).c_str());
 
 			if (test_surface == NULL) {
 				base_path += "../";
@@ -65,26 +72,55 @@ namespace Framework::SDLUtils {
 		}
 
 		if (test_surface == NULL) {
-			printf("Could not find assets folder!\n");
-			return "assets/";
+			printf("Could not find base directory!\n");
+			return "";
 		}
 
 		SDL_FreeSurface(test_surface);
+		SDL_ClearError();
 
-		std::string message = "Found assets folder: " + base_path + "assets/\n\n";
+		std::string message = "Found base directory: " + base_path + "\n\n";
 
 		printf("%s", message.c_str());
 
-		return base_path + "assets/";
+		return base_path;
 	}
 
-	int SDL_SetRenderDrawColor(SDL_Renderer* renderer, const Colour& colour) {
-		return SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
+	void SDL_SetRenderDrawColor(SDL_Renderer* renderer, const Colour& colour) {
+		SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
+	}
+
+	Colour SDL_GetRenderDrawColor(SDL_Renderer* renderer) {
+		Colour c;
+		SDL_GetRenderDrawColor(renderer, &c.r, &c.g, &c.b, &c.a);
+		return c;
 	}
 
 	void SDL_SetTextureColorMod(SDL_Texture* texture, const Colour& colour) {
 		SDL_SetTextureColorMod(texture, colour.r, colour.g, colour.b);
 	}
+
+
+	void SDL_UnsetRenderTarget(SDL_Renderer* renderer) {
+		::SDL_SetRenderTarget(renderer, NULL);
+	}
+
+
+	// Uses the current colour set by SDL_SetRenderDrawColour
+	void SDL_RenderFillRect(SDL_Renderer* renderer, const Rect& rect) {
+		SDL_Rect sdl_rect = SDLUtils::get_sdl_rect(rect);
+		SDL_RenderFillRect(renderer, &sdl_rect);
+	}
+
+	void SDL_RenderDrawRect(SDL_Renderer* renderer, const Rect& rect) {
+		SDL_Rect sdl_rect = SDLUtils::get_sdl_rect(rect);
+		SDL_RenderDrawRect(renderer, &sdl_rect);
+	}
+
+	void SDL_RenderDrawLine(SDL_Renderer* renderer, const vec2& start, const vec2& end) {
+		SDL_RenderDrawLine(renderer, static_cast<int>(start.x), static_cast<int>(start.y), static_cast<int>(end.x), static_cast<int>(end.y));
+	}
+
 
 	void SDL_SetPixel(SDL_Surface* surface, int x, int y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
 		SDL_LockSurface(surface);
@@ -166,5 +202,22 @@ namespace Framework::SDLUtils {
 		if (flip & ImageFlip::FLIP_VERTICAL) sdl_flip |= SDL_FLIP_HORIZONTAL;
 
 		return static_cast<SDL_RendererFlip>(sdl_flip);
+	}
+
+
+	// Calculate the rectangular intersection of two Rect instances
+	Rect rect_intersection(const Rect& a, const Rect& b) {
+		// If no intersection, we can't clip
+		if (!colliding(a, b)) return RECT_NULL;
+
+		Rect result; // note: broken? - note: not sure what this comment means?
+
+		result.position.x = std::max(a.position.x, b.position.x);
+		result.position.y = std::max(a.position.y, b.position.y);
+
+		result.size.x = std::min(a.position.x + a.size.x, b.position.x + b.size.x) - result.position.x;
+		result.size.y = std::min(a.position.y + a.size.y, b.position.y + b.size.y) - result.position.y;
+
+		return result;
 	}
 }

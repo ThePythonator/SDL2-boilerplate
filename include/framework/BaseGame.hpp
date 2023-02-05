@@ -1,9 +1,9 @@
 #pragma once
 
+#include "SDL.h"
+
 #include <algorithm>
 #include <vector>
-
-#include "SDL.h"
 
 #include "SDLUtils.hpp"
 

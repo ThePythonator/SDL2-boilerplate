@@ -3,6 +3,8 @@
 #include "Maths.hpp"
 
 namespace Framework {
+	// Note: it might be possible that certain possible transforms cannot be represented using a single SpriteTransform
+	// In addition, it seems that SWAP_XY is equivalent to ROTATE_180
 	enum class SpriteTransform {
 		NONE,
 

@@ -20,6 +20,9 @@ namespace Framework {
 		}
 
 		void Mouse::update() {
+			_scroll_amount = 0.0f;
+			_distance_moved = VEC_NULL;
+
 			for (uint8_t i = 0; i < BUTTON_COUNT; i++) {
 				if (_buttons.button_array[i] == MouseButtonState::JUST_PRESSED) {
 					_buttons.button_array[i] = MouseButtonState::STILL_DOWN;
@@ -31,6 +34,8 @@ namespace Framework {
 		}
 
 		void Mouse::update_mouse(const SDL_Event& sdl_event) {
+			vec2 last_position = _position;
+
 			if (sdl_event.type == SDL_MOUSEMOTION) {
 				// Update position
 				_position = vec2{ static_cast<float>(sdl_event.motion.x), static_cast<float>(sdl_event.motion.y) };
@@ -54,10 +59,29 @@ namespace Framework {
 					break;
 				}
 			}
+			else if (sdl_event.type == SDL_MOUSEWHEEL) {
+				int8_t direction = sdl_event.wheel.direction == SDL_MOUSEWHEEL_NORMAL ? 1 : -1;
+
+				_scroll_amount = sdl_event.wheel.y;
+			}
+
+			_distance_moved = _position - last_position;
 		}
 
 		void Mouse::set_cursor(bool visible) {
 			SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
+		}
+
+		vec2 Mouse::distance_moved() {
+			return _distance_moved;
+		}
+
+		vec2 Mouse::distance_dragged(MouseButton button) {
+			return pressed(button) ? distance_moved() : VEC_NULL;
+		}
+
+		float Mouse::scroll_amount() {
+			return _scroll_amount;
 		}
 	}
 }

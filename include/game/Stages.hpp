@@ -2,6 +2,8 @@
 
 #include "BaseStage.hpp"
 
+#include "Constants.hpp"
+
 class TitleStage : public Framework::BaseStage {
 public:
 	void start();

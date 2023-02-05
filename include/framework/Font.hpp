@@ -39,7 +39,7 @@ namespace Framework {
 		};
 
 		Font();
-		Font(Graphics* graphics, Spritesheet* spritesheet, uint8_t spacing = 1);
+		Font(Spritesheet* spritesheet, uint8_t spacing = 1);
 
 		void render_text(std::string text, vec2 position, Colour colour, AnchorPosition anchor_position = AnchorPosition::CENTER_CENTER);
 		void render_text(std::string text, vec2 position, Colour colour, float scale, AnchorPosition anchor_position = AnchorPosition::CENTER_CENTER);
@@ -67,12 +67,13 @@ namespace Framework {
 		Text(Font* font, std::string text, Colour colour, Font::AnchorPosition anchor_position = Font::AnchorPosition::CENTER_CENTER);
 		Text(Font* font, std::string text, Colour colour, float scale, Font::AnchorPosition anchor_position = Font::AnchorPosition::CENTER_CENTER);
 
-		void render(vec2 position);
-		void render(vec2 position, Colour colour);
-		void render(vec2 position, Font::AnchorPosition anchor_position);
-		void render(vec2 position, Colour colour, Font::AnchorPosition anchor_position);
+		void render(vec2 position) const;
+		void render(vec2 position, Colour colour) const;
+		void render(vec2 position, Font::AnchorPosition anchor_position) const;
+		void render(vec2 position, Colour colour, Font::AnchorPosition anchor_position) const;
 		
 		void set_text(std::string text);
+		std::string get_text() const;
 
 	private:
 		Font* _font_ptr = nullptr;
@@ -81,4 +82,23 @@ namespace Framework {
 		Font::AnchorPosition _anchor = Font::AnchorPosition::CENTER_CENTER;
 		float _scale = 1.0f;
 	};
+
+
+	// String manipulation functions
+
+	/*
+	* Trims all characters which are more than 'precision' chars after a full stop/decimal place.
+	*
+	* Example usage:
+	*		trim_precision(std::to_string(my_float), 3);
+	*/
+	std::string trim_precision(std::string string, uint8_t precision);
+
+	/*
+	* Overloaded version which automatically converts a float to a string before trimming.
+	*/
+	std::string trim_precision(float num, uint8_t precision);
+	std::string trim_precision(double num, uint8_t precision);
+
+	std::string normalise_magnitude(double num, uint8_t precision, std::string suffix);
 }

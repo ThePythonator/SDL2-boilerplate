@@ -5,6 +5,7 @@ namespace Framework {
 	//const float EPSILON = 0.0001f; // todo: check if reasonable
 
 	const vec2 VEC_NULL = vec2{ 0.0f, 0.0f };
+	const vec2 VEC_ONES = vec2{ 1.0f, 1.0f };
 	const Rect RECT_NULL = Rect(VEC_NULL, VEC_NULL);
 
 	// Rect and collision detection
@@ -12,6 +13,11 @@ namespace Framework {
 	Rect::Rect(vec2 _position, vec2 _size) {
 		position = _position;
 		size = _size;
+	}
+
+	Rect::Rect(vec2 _position, int _size) {
+		position = _position;
+		size = Vec(_size, _size);
 	}
 
 	Rect::Rect(float x, float y, float width, float height) {
@@ -48,6 +54,16 @@ namespace Framework {
 	bool colliding(Rect a, Rect b) {
 		return b.position.x + b.size.x >= a.position.x && b.position.x <= a.position.x + a.size.x &&
 			   b.position.y + b.size.y >= a.position.y && b.position.y <= a.position.y + a.size.y;
+	}
+
+	Rect centred_rect(vec2 centre, vec2 size) {
+		return Rect(centre - size / 2, size);
+	}
+	Rect centred_rect(vec2 centre, float size) {
+		return Rect(centre - size / 2, size);
+	}
+	Rect centred_rect(float centre_x, float centre_y, float width, float height) {
+		return centred_rect({ centre_x, centre_y }, { width, height });
 	}
 
 	vec2 Vec(float x, float y) {
@@ -96,5 +112,9 @@ namespace Framework {
 
 	float randf() {
 		return (rand() % 1001) / 1000.0f;
+	}
+
+	float randf(float min, float max) {
+		return min + randf() * (max - min);
 	}
 }

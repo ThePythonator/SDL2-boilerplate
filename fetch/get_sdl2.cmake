@@ -39,8 +39,24 @@ if(NOT TARGET SDL2::image)
     # get SDL2_image (no released version has CMake support)
     FetchContent_Populate(SDL2_image
         GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-        GIT_TAG        main
+        GIT_TAG        SDL2
     )
     add_subdirectory(${sdl2_image_SOURCE_DIR} SDL2_image EXCLUDE_FROM_ALL)
-    set_property(TARGET jpeg PROPERTY POSITION_INDEPENDENT_CODE ON) # build fix
+    #set_property(TARGET jpeg PROPERTY POSITION_INDEPENDENT_CODE ON) # build fix
+endif()
+
+if(NOT TARGET SDL2::mixer)
+    # Not sure what I'm doing here
+    set(SUPPORT_MP3_MPG123 ON)
+    #set(SUPPORT_OGG ON)
+    set(SUPPORT_OGG ON CACHE BOOL "")
+
+    FetchContent_Populate(SDL2_mixer
+        GIT_REPOSITORY https://github.com/Daft-Freak/SDL_mixer
+        GIT_TAG        patch-1
+    )
+    #add_definitions(-DMUSIC_MP3 -DMUSIC_OGG) # VS compile errors if no music formats?? //-DMUSIC_WAV
+    add_subdirectory(${sdl2_mixer_SOURCE_DIR} SDL2_mixer EXCLUDE_FROM_ALL)
+    #set_property(TARGET vorbisidec PROPERTY POSITION_INDEPENDENT_CODE ON) # build fix
+    # ogg too?
 endif()

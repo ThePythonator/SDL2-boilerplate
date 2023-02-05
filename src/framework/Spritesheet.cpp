@@ -6,8 +6,7 @@ namespace Framework {
 
 	}
 
-	Spritesheet::Spritesheet(Graphics* graphics, Image* spritesheet_image, uint8_t sprite_size, uint8_t default_scale, bool scale_positions) {
-		//_graphics = graphics;
+	Spritesheet::Spritesheet(Image* spritesheet_image, uint8_t sprite_size, uint8_t default_scale, bool scale_positions) {
 		_spritesheet_image = spritesheet_image;
 
 		_sprite_size = sprite_size;
@@ -48,7 +47,7 @@ namespace Framework {
 	}
 	void Spritesheet::sprite(uint16_t index, float x, float y, float scale, float angle, SpriteTransform transform) {
 		Rect src = Rect(_sprite_size * (index % _columns), _sprite_size * (index / _columns), _sprite_size, _sprite_size);
-		rect(src, x, y, scale, angle, scale * src.size / 2, transform); // tod fi?
+		rect(src, x, y, scale, angle, scale * src.size / 2, transform); // tod fi? - note: no idea what this means?? maybe todo fix?
 	}
 
 	void Spritesheet::sprite(uint16_t index, vec2 position, float scale, float angle, vec2 centre, SpriteTransform transform) {
@@ -58,7 +57,6 @@ namespace Framework {
 		Rect src = Rect(_sprite_size * (index % _columns), _sprite_size * (index / _columns), _sprite_size, _sprite_size);
 		rect(src, x, y, scale, angle, centre, transform);
 	}
-
 
 
 	void Spritesheet::rect(Rect src, vec2 position, SpriteTransform transform) {
@@ -114,6 +112,7 @@ namespace Framework {
 		return alpha;
 	}*/
 
+
 	// BaseSprite
 
 	BaseSprite::BaseSprite() {
@@ -129,6 +128,10 @@ namespace Framework {
 		_image->render(Rect(position, _image->get_size() * _scale));
 	}
 
+	Rect ImageSprite::bounding_rect(vec2 position) {
+		return Rect(position, _image->get_size());
+	}
+
 	// SpritesheetSprite
 
 	SpritesheetSprite::SpritesheetSprite() { }
@@ -138,6 +141,11 @@ namespace Framework {
 	void SpritesheetSprite::render(vec2 position) {
 		if (_use_index) _spritesheet->sprite(_index, position, _scale);
 		else			_spritesheet->rect(_rect, position, _scale);
+	}
+
+	Rect SpritesheetSprite::bounding_rect(vec2 position) {
+		vec2 size = _use_index ? VEC_ONES * _spritesheet->get_sprite_size() : _rect.size;
+		return Rect(position, size * _scale);
 	}
 
 	// LineSprite
@@ -151,6 +159,27 @@ namespace Framework {
 		_graphics->render_poly(_points, position, _colour);
 	}
 
+	Rect LineSprite::bounding_rect(vec2 position) {
+		if (_points.size() == 0) return RECT_NULL;
+
+		float top = _points[0].y;
+		float left = _points[0].x;
+
+		float bottom = top;
+		float right = left;
+
+		for (uint8_t i = 1; i < _points.size(); i++) {
+			// i starts at 1 because we've initialised our temporary variables using _points[0]
+			top = std::min(top, _points[i].y);
+			bottom = std::max(bottom, _points[i].y);
+
+			left = std::min(left, _points[i].x);
+			right = std::max(right, _points[i].x);
+		}
+
+		return Rect(top, left, bottom - top, right - left);
+	}
+
 	// CircleSprite
 
 	CircleSprite::CircleSprite() { }
@@ -158,5 +187,9 @@ namespace Framework {
 
 	void CircleSprite::render(vec2 position) {
 		_graphics->render_circle(position, _radius, _colour);
+	}
+
+	Rect CircleSprite::bounding_rect(vec2 position) {
+		return Rect(position - _radius, _radius * 2 * VEC_ONES);
 	}
 }

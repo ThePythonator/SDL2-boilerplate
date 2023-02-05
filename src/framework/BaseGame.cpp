@@ -56,13 +56,23 @@ namespace Framework {
 		// Handle events
 		SDL_Event sdl_event;
 		while (SDL_PollEvent(&sdl_event) != 0) {
-			if (sdl_event.type == SDL_QUIT) {
+			switch (sdl_event.type) {
+			case SDL_QUIT:
 				// X (close) is pressed
 				return false;
-			}
-			else {
+
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+			case SDL_MOUSEMOTION:
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+			case SDL_MOUSEWHEEL:
 				// Delegate to InputHandler
 				input.handle_sdl_event(sdl_event);
+				break;
+
+			default:
+				break;
 			}
 		}
 
@@ -120,18 +130,24 @@ namespace Framework {
 
 	bool BaseGame::init() {
 		// Prep SDL, return false if it fails
-		if (!Framework::SDLUtils::init_sdl(window, renderer)) {
+		if (!Framework::SDLUtils::init_sdl(window, renderer, WINDOW::TITLE, WINDOW::SIZE)) {
 			return false;
 		}
 
+		// Add Graphics and Window pointers
 		graphics_objects.graphics_ptr = new Graphics();
 		graphics_objects.graphics_ptr->set_renderer(renderer);
+
+		graphics_objects.window_ptr = new Window();
+		graphics_objects.window_ptr->set_window(window);
 
 		// Set up graphics_objects vectors:
 		graphics_objects.image_ptrs = std::vector<Framework::Image*>(GRAPHICS_OBJECTS::IMAGES::TOTAL_IMAGES);
 		graphics_objects.spritesheet_ptrs = std::vector<Framework::Spritesheet*>(GRAPHICS_OBJECTS::SPRITESHEETS::TOTAL_SPRITESHEETS);
 		graphics_objects.font_ptrs = std::vector<Framework::Font*>(GRAPHICS_OBJECTS::FONTS::TOTAL_FONTS);
 		graphics_objects.transition_ptrs = std::vector<Framework::BaseTransition*>(GRAPHICS_OBJECTS::TRANSITIONS::TOTAL_TRANSITIONS);
+
+		//graphics_objects.button_image_groups = std::vector<Framework::Button::ButtonImages>(GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::TOTAL_BUTTON_IMAGE_GROUPS);
 
 		// Load game data
 		load_data();
@@ -147,28 +163,35 @@ namespace Framework {
 
 		// Clear spritesheets
 		for (Framework::Spritesheet* spritesheet_ptr : graphics_objects.spritesheet_ptrs) {
+			if (!spritesheet_ptr) continue;
 			delete spritesheet_ptr;
 		}
 		graphics_objects.spritesheet_ptrs.clear();
 
 		// Clear images
 		for (Framework::Image* image_ptr : graphics_objects.image_ptrs) {
-			image_ptr->free();
+			if (!image_ptr) continue;
 			delete image_ptr;
 		}
 		graphics_objects.image_ptrs.clear();
 
 		// Clear fonts
 		for (Framework::Font* font_ptr : graphics_objects.font_ptrs) {
+			if (!font_ptr) continue;
 			delete font_ptr;
 		}
 		graphics_objects.font_ptrs.clear();
 
 		// Clear transitions
 		for (Framework::BaseTransition* transition_ptr : graphics_objects.transition_ptrs) {
+			if (!transition_ptr) continue;
 			delete transition_ptr;
 		}
 		graphics_objects.transition_ptrs.clear();
+
+		// Clear graphics and window objects
+		delete graphics_objects.graphics_ptr;
+		delete graphics_objects.window_ptr;
 
 		
 		// Destroy renderer and window
