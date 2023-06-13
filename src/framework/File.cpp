@@ -48,7 +48,12 @@ namespace Framework {
 
 			switch (file_format) {
 			case TMXFormat::JSON:
-				JSONHandler::read(filepath).get_to(tmx_data);
+			{
+				JSONHandler::json json_data = JSONHandler::read(filepath);
+				if (!json_data.empty()) {
+					json_data.get_to(tmx_data);
+				}
+			}
 				break;
 			case TMXFormat::XML:
 				printf("Tiled level file format unsupported (XML)!");
@@ -69,10 +74,32 @@ namespace Framework {
 		TMXFormat get_format(std::string filepath) {
 			std::string extension = std::filesystem::path(filepath).extension().string();
 
-			if (extension == ".json" || extension == ".tmj")   return TMXFormat::JSON;
-			else if (extension == ".xml" || extension == ".tmx")    return TMXFormat::XML;
+			if		(extension == ".json" || extension == ".tmj")   return TMXFormat::JSON;
+			else if (extension == ".xml"  || extension == ".tmx")   return TMXFormat::XML;
 			else if (extension == ".csv")                           return TMXFormat::CSV;
 			else                                                    return TMXFormat::UNKNOWN;
+		}
+
+		// Changes the null tile index from 0 to the value specified, reducing all other indices by 1
+		void reindex_empty_tiles(TMX& data, uint16_t new_empty_index) {
+			for (auto& [name, layer] : data.layers) {
+				for (uint16_t i = 0; i < layer.size(); i++) {
+					// Update the index
+					layer[i] = layer[i] ? layer[i] - 1 : new_empty_index;
+				}
+			}
+		}
+
+		// Converts the JSON layer array into a map which allows layer lookup by name
+		std::map<std::string, TMXLayer> parse_layers(const JSONHandler::json& layers) {
+			std::map<std::string, TMXLayer> parsed_layers;
+
+			for (const JSONHandler::json& layer : layers) {
+				// This is not designed to handle multiple layers with the same name
+				parsed_layers[layer.at("name").get<std::string>()] = layer.at("data").get<TMXLayer>();
+			}
+
+			return parsed_layers;
 		}
 
 
@@ -82,25 +109,10 @@ namespace Framework {
 			try {
 				json_data.at("width").get_to(data.width);
 				json_data.at("height").get_to(data.height);
-				json_data.at("layers").get_to(data.layers);
+				data.layers = parse_layers(json_data.at("layers"));
 			}
 			catch (const JSONHandler::out_of_range& error) {
 				printf("Couldn't parse JSON to TMX! Error: %s\n", error.what());
-			}
-		}
-
-		void from_json(const JSONHandler::json& json_data, std::map<std::string, TMXLayer>& data) {
-			try {
-				for (const JSONHandler::json& layer : json_data) {
-					// This does not work if maps have multiple layers with the same name
-					data.insert_or_assign(
-						layer.at("name").get<std::string>(),
-						layer.at("data").get<TMXLayer>() // This works without another from_json method since the underlying type is a vector
-					);
-				}
-			}
-			catch (const JSONHandler::out_of_range& error) {
-				printf("Couldn't parse JSON to std::map<std::string, TMXLayer>! Error: %s\n", error.what());
 			}
 		}
 	}
