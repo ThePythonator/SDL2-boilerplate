@@ -21,7 +21,7 @@ void Game::load_data() {
 
 	// Load spritesheet image
 	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::MAIN_SPRITESHEET] = Framework::create_image(graphics_objects.graphics_ptr, IMAGES_PATH + PATHS::IMAGES::MAIN_SPRITESHEET, Framework::Image::Flags::SDL_TEXTURE);
-	
+
 	// Load font image
 	// Note: we *need* to add SURFACE flags because Font uses the surface bit
 	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::FONT_SPRITESHEET] = Framework::create_image(graphics_objects.graphics_ptr, IMAGES_PATH + PATHS::IMAGES::FONT_SPRITESHEET, Framework::Image::Flags::SDL_TEXTURE | Framework::Image::Flags::SDL_SURFACE);
@@ -35,6 +35,25 @@ void Game::load_data() {
 	// Create font from font spritesheet
 	graphics_objects.font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT] = new Framework::Font(graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::FONT_SPRITESHEET], FONTS::SPACING::MAIN_FONT);
 	
+
+	// Load button images
+	// TODO: change from hardcoded values!!!
+	// TODO: also could change into a single function to create an image from a spritesheet
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::UNSELECTED] = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16));
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::UNSELECTED]->set_render_target();
+	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->rect(Framework::Rect(0, 16, 64, 16), Framework::Vec(0, 0), 1.0f);
+
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::HOVERED] = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16));
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::HOVERED]->set_render_target();
+	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->rect(Framework::Rect(0, 32, 64, 16), Framework::Vec(0, 0), 1.0f);
+
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::SELECTED] = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16));
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::SELECTED]->set_render_target();
+	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->rect(Framework::Rect(0, 48, 64, 16), Framework::Vec(0, 0), 1.0f);
+
+	Framework::SDLUtils::SDL_UnsetRenderTarget(graphics_objects.graphics_ptr->get_renderer());
+
+
 	// Create transitions
 	graphics_objects.transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION] = new Framework::FadeTransition(graphics_objects.graphics_ptr, COLOURS::BLACK, TRANSITIONS::FADE_TIME);
 }

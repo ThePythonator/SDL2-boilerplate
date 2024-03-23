@@ -3,6 +3,19 @@
 // TitleStage
 
 void TitleStage::start() {
+	// Create buttons
+	buttons = {
+		Framework::Button(
+			Framework::Rect(128, 0, 256, 64),
+			Framework::Button::ButtonImages{
+				graphics_objects->image_ptrs[GRAPHICS_OBJECTS::BUTTONS::UNSELECTED],
+				graphics_objects->image_ptrs[GRAPHICS_OBJECTS::BUTTONS::HOVERED],
+				graphics_objects->image_ptrs[GRAPHICS_OBJECTS::BUTTONS::SELECTED]
+			},
+			Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Play", COLOURS::BLACK, 4.0f)
+		)
+	};
+
 	// Start transition
 	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
 	transition->open();
@@ -61,6 +74,10 @@ void TitleStage::render() {
 	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(2, Framework::Vec(32, 48), Framework::SpriteTransform::ROTATE_90_ACW);
 
 	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(1, Framework::Vec(96, 48), SPRITES::SCALE, _timer.time() * 90);
+
+	for (const Framework::Button& button : buttons) {
+		button.render();
+	}
 
 	transition->render();
 }

@@ -50,6 +50,14 @@ namespace GRAPHICS_OBJECTS {
 		};
 	}
 
+	namespace BUTTONS {
+		enum BUTTONS {
+			UNSELECTED,
+			HOVERED,
+			SELECTED
+		};
+	}
+
 	namespace SPRITESHEETS {
 		enum SPRITESHEETS {
 			MAIN_SPRITESHEET,
