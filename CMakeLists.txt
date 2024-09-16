@@ -10,8 +10,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 # Uncomment if you need to do some debugging :)
 # set(CMAKE_FIND_DEBUG_MODE TRUE)
 
+# Uncomment if no console should be created
+# set(WINDOWS_NO_CONSOLE)
+
 # Change your project name here
-set(PROJECT_NAME YourGame)
+project(YourGame)
 
 # Add your sources here (adding headers is optional, but helps some CMake generators)
 set(GAME_SOURCES
@@ -23,15 +26,6 @@ set(GAME_SOURCES
 
 # To be used instead of set(GAME_SOURCES ...)
 # set(USE_GLOB)
-
-# Uncomment if no console should be created
-# set(WINDOWS_NO_CONSOLE)
-
-# Uncomment if using Assets.yml and the 32blit asset manager
-# set(USE_ASSETS_YML)
-
-
-project(${PROJECT_NAME})
 
 set(FRAMEWORK_SOURCES
 	"BaseGame.cpp"
@@ -80,16 +74,10 @@ if (USE_GLOB)
 endif()
 
 set(PROJECT_SOURCES ${FRAMEWORK_SOURCES};${GAME_SOURCES})
-if(USE_ASSETS_YML)
-	list(APPEND PROJECT_SOURCES "Assets.cpp")
-endif()
 
-# ... and any other files you want in the release here
+# Add any other files you want in the release here
 set(PROJECT_DISTRIBS LICENSE README.md)
 set(PROJECT_ASSETS assets)
-
-set(ASSET_OUTPUTS "Assets.hpp" "Assets.cpp")
-set(ASSET_DEPENDS "Assets.yml")
 
 if(APPLE)
     # Need to put the asssets inside the bundle (this is where SDL_GetBasePath points to)
@@ -105,17 +93,6 @@ endif()
 
 add_executable(${PROJECT_NAME} ${CONSOLE_FLAG} MACOSX_BUNDLE ${PROJECT_SOURCES})
 
-find_package(PythonInterp 3.6 REQUIRED)
-
-if(USE_ASSETS_YML)
-# Build Assets.hpp/cpp files
-add_custom_command(
-    OUTPUT ${ASSET_OUTPUTS}
-    COMMAND ${PYTHON_EXECUTABLE} -m ttblit pack --config ${CMAKE_CURRENT_SOURCE_DIR}/${ASSET_DEPENDS} --output ${CMAKE_CURRENT_BINARY_DIR} --force
-    DEPENDS ${ASSET_DEPENDS}
-)
-endif()
-
 include(fetch/get_json.cmake)
 include(fetch/get_sdl2.cmake)
 
@@ -126,7 +103,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/external)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 # Link
-target_link_libraries(${PROJECT_NAME} SDL2::SDL2main SDL2::SDL2 SDL2::image SDL2::mixer nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} SDL2::SDL2main SDL2::SDL2 SDL2_image::SDL2_image SDL2_mixer::SDL2_mixer nlohmann_json::nlohmann_json)
 
 
 # Setup release packages

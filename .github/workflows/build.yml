@@ -1,5 +1,5 @@
 # Build Github Action, to run a test build on all targets
-# (Linux, Blit, MacOS, Visual Studio) when the project is checked in.
+# (Linux, Emscripten, MacOS, Visual Studio) when the project is checked in.
 #
 # Thanks in large part to the phenomenal examples of DaftFreak.
 
@@ -27,14 +27,11 @@ jobs:
           - os: ubuntu-20.04
             name: Linux
             release-suffix: LIN64
-            cmake-args: #-DSDL2_IMAGE_DIR=$GITHUB_WORKSPACE/main/SDL2
-            apt-packages: libsdl2-dev libsdl2-image-dev python3-setuptools
-            can-fail: true
+            can-fail: false
 
           - os: ubuntu-20.04
             name: Emscripten
             release-suffix: WEB
-            cmake-args: #-DSDL2_IMAGE_DIR=$GITHUB_WORKSPACE/main/SDL2
             cmake-prefix: emcmake
             apt-packages: python3-setuptools
             can-fail: true
@@ -42,15 +39,12 @@ jobs:
           - os: macos-latest
             name: macOS
             release-suffix: MACOS
-            cmake-args: #-DSDL2_IMAGE_DIR=$GITHUB_WORKSPACE/main/SDL2
-            brew-packages: sdl2 sdl2_image
             can-fail: true
 
           - os: windows-latest
             name: Visual Studio
             release-suffix: WIN64
-            cmake-args: #-DSDL2_DIR=$GITHUB_WORKSPACE/main/SDL2 -DSDL2_image_DIR=$GITHUB_WORKSPACE/main/SDL2
-            can-fail: true
+            can-fail: false
 
 
     runs-on: ${{matrix.os}}
@@ -65,27 +59,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: main
-
-    # Linux dependencies
-    - name: Install Linux deps
-      if: runner.os == 'Linux'
-      run: |
-        sudo apt update && sudo apt install ${{matrix.apt-packages}}
-        pip3 install 32blit
-
-    # MacOS dependencies
-    - name: Install macOS deps
-      if: runner.os == 'macOS'
-      run: |
-        brew install ${{matrix.brew-packages}}
-        python3 -m pip install 32blit
-
-    # Windows dependencies
-    - name: Install Windows deps
-      if: runner.os == 'Windows'
-      shell: bash
-      run: |
-        python -m pip install 32blit
 
     # Emscripten SDK setup
     - name: Setup Emscripten cache
