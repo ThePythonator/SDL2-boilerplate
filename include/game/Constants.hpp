@@ -99,6 +99,7 @@ namespace FONTS {
 
 namespace COLOURS {
 	const Framework::Colour BLACK{ 0x00, 0x00, 0x00 };
+	const Framework::Colour BLUE { 0xA7, 0xC7, 0xE7 };
 	const Framework::Colour WHITE{ 0xFF, 0xFF, 0xFF };
 }
 
@@ -133,7 +134,6 @@ namespace BUTTONS {
 	namespace TITLE {
 		enum TITLE {
 			PLAY,
-			SETTINGS,
 			QUIT,
 
 			TOTAL
