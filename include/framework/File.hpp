@@ -56,7 +56,7 @@ namespace Framework {
 		// This shouldn't ever be needed, so it isn't implemented
 		//void write(std::string filepath, TMX data, TMXFormat file_format = TMXFormat::AUTO);
 
-		/// Determines the Tiled level file format from the file name
+		// Determines the Tiled level file format from the file name
 		TMXFormat get_format(std::string filepath);
 
 		// Changes the null tile index from 0 to the value specified, reducing all other indices by 1

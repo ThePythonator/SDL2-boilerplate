@@ -4,16 +4,7 @@
 
 #include "Constants.hpp"
 
-class TitleStage : public Framework::BaseStage {
-public:
-	void start();
-
-	bool update(float dt);
-	void render();
-
-private:
-	Framework::Timer _timer;
-};
+#include "MenuStages.hpp"
 
 class GameStage : public Framework::BaseStage {
 public:

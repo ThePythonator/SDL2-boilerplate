@@ -104,7 +104,7 @@ namespace COLOURS {
 }
 
 namespace TIMINGS {
-
+	const float INTRO_OPEN_TIME = 4.0f;
 }
 
 namespace TRANSITIONS {
