@@ -1,6 +1,0 @@
-Assets.cpp:
-    
-  #assets/level0.tmx:
-  #  name: asset_level_0
-  #  empty_tile: 255
-  #  output_struct: true
