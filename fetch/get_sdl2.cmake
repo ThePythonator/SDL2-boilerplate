@@ -1,4 +1,4 @@
-# defines SDL2::SDL2, SDL2::SDL2main and SDL2::image targets
+# Defines SDL2::SDL2, SDL2::SDL2main, SDL2_image::SDL2_image, and SDL2_mixer::SDL2_mixer targets
 
 if(EMSCRIPTEN)
     # Emscripten-specific magic
@@ -10,7 +10,7 @@ if(EMSCRIPTEN)
 
     add_library(SDL2::SDL2main INTERFACE IMPORTED)
 
-    add_library(SDL2::image INTERFACE IMPORTED)
+    add_library(SDL2_image::SDL2_image INTERFACE IMPORTED)
     set_target_properties(SDL2_image::SDL2_image PROPERTIES
         INTERFACE_COMPILE_OPTIONS "SHELL:-s USE_SDL_IMAGE=2"
         INTERFACE_LINK_LIBRARIES "-s USE_SDL_IMAGE=2"
@@ -35,7 +35,7 @@ if(NOT TARGET SDL2::SDL2)
     add_subdirectory(${sdl2_SOURCE_DIR} SDL2 EXCLUDE_FROM_ALL)
 endif()
 
-if(NOT TARGET SDL2::image)
+if(NOT TARGET SDL2_image::SDL2_image)
     # get SDL2_image (no released version has CMake support)
     FetchContent_Populate(SDL2_image
         GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
@@ -44,7 +44,7 @@ if(NOT TARGET SDL2::image)
     add_subdirectory(${sdl2_image_SOURCE_DIR} SDL2_image EXCLUDE_FROM_ALL)
 endif()
 
-if(NOT TARGET SDL2::mixer)
+if(NOT TARGET SDL2_mixer::SDL2_mixer)
     set(SDL2MIXER_OPUS OFF CACHE BOOL "" FORCE)
     set(SDL2MIXER_MOD OFF CACHE BOOL "" FORCE)
     set(SDL2MIXER_MIDI OFF CACHE BOOL "" FORCE)
