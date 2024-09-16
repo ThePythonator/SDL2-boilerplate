@@ -50,11 +50,11 @@ namespace GRAPHICS_OBJECTS {
 		};
 	}
 
-	namespace BUTTONS {
-		enum BUTTONS {
-			UNSELECTED,
-			HOVERED,
-			SELECTED
+	namespace BUTTON_IMAGE_GROUPS {
+		enum BUTTON_IMAGE_GROUPS {
+			STANDARD,
+
+			TOTAL_BUTTON_IMAGE_GROUPS
 		};
 	}
 

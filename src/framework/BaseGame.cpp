@@ -146,8 +146,7 @@ namespace Framework {
 		graphics_objects.spritesheet_ptrs = std::vector<Framework::Spritesheet*>(GRAPHICS_OBJECTS::SPRITESHEETS::TOTAL_SPRITESHEETS);
 		graphics_objects.font_ptrs = std::vector<Framework::Font*>(GRAPHICS_OBJECTS::FONTS::TOTAL_FONTS);
 		graphics_objects.transition_ptrs = std::vector<Framework::BaseTransition*>(GRAPHICS_OBJECTS::TRANSITIONS::TOTAL_TRANSITIONS);
-
-		//graphics_objects.button_image_groups = std::vector<Framework::Button::ButtonImages>(GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::TOTAL_BUTTON_IMAGE_GROUPS);
+		graphics_objects.button_image_groups = std::vector<Framework::Button::ButtonImages>(GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::TOTAL_BUTTON_IMAGE_GROUPS);
 
 		// Load game data
 		load_data();
@@ -188,6 +187,13 @@ namespace Framework {
 			delete transition_ptr;
 		}
 		graphics_objects.transition_ptrs.clear();
+
+		// Clear button images
+		for (const Framework::Button::ButtonImages& button_images : graphics_objects.button_image_groups) {
+			delete button_images.unselected;
+			delete button_images.hovered;
+			delete button_images.selected;
+		}
 
 		// Clear graphics and window objects
 		delete graphics_objects.graphics_ptr;

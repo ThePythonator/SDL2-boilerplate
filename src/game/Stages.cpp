@@ -7,11 +7,7 @@ void TitleStage::start() {
 	buttons = {
 		Framework::Button(
 			Framework::Rect(128, 0, 256, 64),
-			Framework::Button::ButtonImages{
-				graphics_objects->image_ptrs[GRAPHICS_OBJECTS::BUTTONS::UNSELECTED],
-				graphics_objects->image_ptrs[GRAPHICS_OBJECTS::BUTTONS::HOVERED],
-				graphics_objects->image_ptrs[GRAPHICS_OBJECTS::BUTTONS::SELECTED]
-			},
+			graphics_objects->button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD],
 			Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Play", COLOURS::BLACK, 4.0f)
 		)
 	};

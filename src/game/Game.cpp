@@ -37,18 +37,20 @@ void Game::load_data() {
 	
 
 	// Load button images
-	// TODO: change from hardcoded values!!!
 	// TODO: also could change into a single function to create an image from a spritesheet
-	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::UNSELECTED] = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16));
-	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::UNSELECTED]->set_render_target();
+	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD] = {
+		.unselected = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16)),
+		.hovered    = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16)),
+		.selected   = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16)),
+	};
+
+	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD].unselected->set_render_target();
 	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->rect(Framework::Rect(0, 16, 64, 16), Framework::Vec(0, 0), 1.0f);
 
-	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::HOVERED] = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16));
-	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::HOVERED]->set_render_target();
+	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD].hovered->set_render_target();
 	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->rect(Framework::Rect(0, 32, 64, 16), Framework::Vec(0, 0), 1.0f);
 
-	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::SELECTED] = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16));
-	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::BUTTONS::SELECTED]->set_render_target();
+	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD].selected->set_render_target();
 	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->rect(Framework::Rect(0, 48, 64, 16), Framework::Vec(0, 0), 1.0f);
 
 	Framework::SDLUtils::SDL_UnsetRenderTarget(graphics_objects.graphics_ptr->get_renderer());
