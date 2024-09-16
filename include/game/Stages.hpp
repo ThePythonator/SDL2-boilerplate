@@ -17,6 +17,8 @@ private:
 
 class GameStage : public Framework::BaseStage {
 public:
+	void start();
+
 	bool update(float dt);
 	void render();
 };
@@ -24,6 +26,8 @@ public:
 class PausedStage : public Framework::BaseStage {
 public:
 	PausedStage(BaseStage* background_stage);
+
+	void start();
 
 	bool update(float dt);
 	void render();

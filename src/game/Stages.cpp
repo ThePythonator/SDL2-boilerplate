@@ -4,16 +4,24 @@
 
 void TitleStage::start() {
 	// Create buttons
-	buttons = {
-		Framework::Button(
-			Framework::Rect(128, 0, 256, 64),
-			graphics_objects->button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD],
-			Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Play", COLOURS::BLACK, 4.0f)
-		)
-	};
+	buttons.clear();
+	buttons.emplace_back(
+		Framework::Rect(WINDOW::SIZE_HALF - Framework::Vec(128, 32), Framework::Vec(256, 64)),
+		graphics_objects->button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD],
+		Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Play", COLOURS::BLACK, 4.0f),
+		BUTTONS::TITLE::PLAY
+	);
+	buttons.emplace_back(
+		Framework::Rect(WINDOW::SIZE_HALF - Framework::Vec(128, -64), Framework::Vec(256, 64)),
+		graphics_objects->button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD],
+		Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Quit", COLOURS::BLACK, 4.0f),
+		BUTTONS::TITLE::QUIT
+	);
+
+	// Set transition
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
 
 	// Start transition
-	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
 	transition->open();
 
 	// Start timer used for rotations
@@ -38,11 +46,7 @@ bool TitleStage::update(float dt) {
 		// Next stage!
 		switch (button_selected) {
 		case BUTTONS::TITLE::PLAY:
-			//finish(new GameStage());
-			break;
-
-		case BUTTONS::TITLE::SETTINGS:
-			//finish(new SettingsStage());
+			finish(new GameStage());
 			break;
 
 		case BUTTONS::TITLE::QUIT:
@@ -59,7 +63,7 @@ bool TitleStage::update(float dt) {
 }
 
 void TitleStage::render() {
-	graphics_objects->graphics_ptr->fill(COLOURS::WHITE);
+	graphics_objects->graphics_ptr->fill(COLOURS::BLUE);
 
 	graphics_objects->graphics_ptr->render_circle(Framework::Vec(20, 20), 10, COLOURS::BLACK);
 	graphics_objects->graphics_ptr->render_rect(Framework::Rect(40, 20, 10, 30), COLOURS::BLACK);
@@ -80,13 +84,29 @@ void TitleStage::render() {
 
 // GameStage
 
+void GameStage::start() {
+	// Set transition
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+
+	// Start transition
+	transition->open();
+}
+
 bool GameStage::update(float dt) {
 	transition->update(dt);
+
+	if (input->just_down(Framework::KeyHandler::Key::ESCAPE) || input->just_down(Framework::KeyHandler::Key::P)) {
+		finish(new PausedStage(this), false);
+	}
 
 	return true;
 }
 
 void GameStage::render() {
+	graphics_objects->graphics_ptr->fill(COLOURS::BLUE);
+
+	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(0, Framework::Vec(128, 64));
+
 	transition->render();
 }
 
@@ -97,6 +117,26 @@ PausedStage::PausedStage(BaseStage* background_stage) : BaseStage() {
 	_background_stage = background_stage;
 }
 
+void PausedStage::start() {
+	// Create buttons
+	buttons.clear();
+	buttons.emplace_back(
+		Framework::Rect(WINDOW::SIZE_HALF - Framework::Vec(128, 32), Framework::Vec(256, 64)),
+		graphics_objects->button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD],
+		Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Resume", COLOURS::BLACK, 4.0f),
+		BUTTONS::PAUSED::RESUME
+	);
+	buttons.emplace_back(
+		Framework::Rect(WINDOW::SIZE_HALF - Framework::Vec(128, -64), Framework::Vec(256, 64)),
+		graphics_objects->button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD],
+		Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Exit", COLOURS::BLACK, 4.0f),
+		BUTTONS::PAUSED::EXIT
+	);
+
+	// Set transition
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+}
+
 bool PausedStage::update(float dt) {
 	transition->update(dt);
 
@@ -104,9 +144,18 @@ bool PausedStage::update(float dt) {
 		transition->close();
 	}
 
+	// Update buttons
+	for (Framework::Button& button : buttons) {
+		button.update(input);
+
+		if (button.pressed() && transition->is_open()) {
+			button_selected = button.get_id();
+			transition->close();
+		}
+	}
+
 	if (transition->is_closed()) {
 		if (button_selected == BUTTONS::PAUSED::EXIT) {
-			delete _background_stage;
 			finish(new TitleStage());
 		}
 		else {
@@ -123,4 +172,11 @@ void PausedStage::render() {
 	_background_stage->render();
 
 	// Render pause menu
+	graphics_objects->graphics_ptr->fill(COLOURS::BLACK, 0x7f);
+
+	for (const Framework::Button& button : buttons) {
+		button.render();
+	}
+
+	transition->render();
 }
