@@ -1,5 +1,49 @@
 #include "MenuStages.hpp"
 
+// IntroStage
+
+void IntroStage::start() {
+	intro_text = Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Some intro text", COLOURS::BLACK);
+
+	intro_timer.stop();
+
+	// Start transition
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+	transition->open();
+}
+
+bool IntroStage::update(float dt) {
+	transition->update(dt);
+	intro_timer.update(dt);
+
+	if (transition->is_open()) {
+		if (intro_timer.running()) {
+			if (intro_timer.time() >= TIMINGS::INTRO_OPEN_TIME) {
+				transition->close();
+			}
+		}
+		else {
+			intro_timer.reset();
+			intro_timer.start();
+		}
+	}
+	else if (transition->is_closed()) {
+		// Finish intro
+		finish(new TitleStage());
+	}
+
+	return true;
+}
+
+void IntroStage::render() {
+	graphics_objects->graphics_ptr->fill(COLOURS::BLUE);
+
+	// Display some intro text in the centre of the display
+	intro_text.render(WINDOW::SIZE_HALF);
+
+	transition->render();
+}
+
 // TitleStage
 
 void TitleStage::start() {
