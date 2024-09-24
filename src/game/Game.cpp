@@ -20,11 +20,11 @@ void Game::load_data() {
 	std::string IMAGES_PATH = BASE_PATH + PATHS::IMAGES::LOCATION;
 
 	// Load spritesheet image
-	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::MAIN_SPRITESHEET] = Framework::create_image(graphics_objects.graphics_ptr, IMAGES_PATH + PATHS::IMAGES::MAIN_SPRITESHEET, Framework::Image::Flags::SDL_TEXTURE);
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::MAIN_SPRITESHEET] = Framework::create_image(&graphics_objects.graphics, IMAGES_PATH + PATHS::IMAGES::MAIN_SPRITESHEET, Framework::Image::Flags::SDL_TEXTURE);
 
 	// Load font image
 	// Note: we *need* to add SURFACE flags because Font uses the surface bit
-	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::FONT_SPRITESHEET] = Framework::create_image(graphics_objects.graphics_ptr, IMAGES_PATH + PATHS::IMAGES::FONT_SPRITESHEET, Framework::Image::Flags::SDL_TEXTURE | Framework::Image::Flags::SDL_SURFACE);
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::FONT_SPRITESHEET] = Framework::create_image(&graphics_objects.graphics, IMAGES_PATH + PATHS::IMAGES::FONT_SPRITESHEET, Framework::Image::Flags::SDL_TEXTURE | Framework::Image::Flags::SDL_SURFACE);
 	
 	// Create spritesheet from spritesheet image
 	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET] = new Framework::Spritesheet(graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::MAIN_SPRITESHEET], SPRITES::SIZE, SPRITES::SCALE);
@@ -39,9 +39,9 @@ void Game::load_data() {
 	// Load button images
 	// TODO: also could change into a single function to create an image from a spritesheet
 	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD] = {
-		.unselected = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16)),
-		.hovered    = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16)),
-		.selected   = Framework::create_image(graphics_objects.graphics_ptr, Framework::Vec(64, 16)),
+		.unselected = Framework::create_image(&graphics_objects.graphics, Framework::Vec(64, 16)),
+		.hovered    = Framework::create_image(&graphics_objects.graphics, Framework::Vec(64, 16)),
+		.selected   = Framework::create_image(&graphics_objects.graphics, Framework::Vec(64, 16)),
 	};
 
 	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD].unselected->set_render_target();
@@ -53,11 +53,11 @@ void Game::load_data() {
 	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD].selected->set_render_target();
 	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->rect(Framework::Rect(0, 48, 64, 16), Framework::Vec(0, 0), 1.0f);
 
-	Framework::SDLUtils::SDL_UnsetRenderTarget(graphics_objects.graphics_ptr->get_renderer());
+	Framework::SDLUtils::SDL_UnsetRenderTarget(graphics_objects.graphics.get_renderer());
 
 
 	// Create transitions
-	graphics_objects.transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION] = new Framework::FadeTransition(graphics_objects.graphics_ptr, COLOURS::BLACK, TRANSITIONS::FADE_TIME);
+	graphics_objects.transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION] = new Framework::FadeTransition(&graphics_objects.graphics, COLOURS::BLACK, TRANSITIONS::FADE_TIME);
 }
 
 void Game::clear_data() {

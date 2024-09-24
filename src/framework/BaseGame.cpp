@@ -81,7 +81,7 @@ namespace Framework {
 		// Clear the screen
 		/*SDLUtils::SDL_SetRenderDrawColor(renderer, COLOURS::BLACK);
 		SDL_RenderClear(renderer);*/
-		graphics_objects.graphics_ptr->fill(COLOURS::BLACK);
+		graphics_objects.graphics.fill(COLOURS::BLACK);
 
 		// Render game
 		render();
@@ -134,12 +134,12 @@ namespace Framework {
 			return false;
 		}
 
-		// Add Graphics and Window pointers
-		graphics_objects.graphics_ptr = new Graphics();
-		graphics_objects.graphics_ptr->set_renderer(renderer);
+		// Create Graphics and Window instances
+		graphics_objects.graphics = Graphics();
+		graphics_objects.graphics.set_renderer(renderer);
 
-		graphics_objects.window_ptr = new Window();
-		graphics_objects.window_ptr->set_window(window);
+		graphics_objects.window = Window();
+		graphics_objects.window.set_window(window);
 
 		// Set up graphics_objects vectors:
 		graphics_objects.image_ptrs = std::vector<Framework::Image*>(GRAPHICS_OBJECTS::IMAGES::TOTAL_IMAGES);
@@ -189,15 +189,13 @@ namespace Framework {
 		graphics_objects.transition_ptrs.clear();
 
 		// Clear button images
+		graphics_objects.button_image_groups.clear();
 		for (const Framework::Button::ButtonImages& button_images : graphics_objects.button_image_groups) {
 			delete button_images.unselected;
 			delete button_images.hovered;
 			delete button_images.selected;
 		}
 
-		// Clear graphics and window objects
-		delete graphics_objects.graphics_ptr;
-		delete graphics_objects.window_ptr;
 
 		
 		// Destroy renderer and window

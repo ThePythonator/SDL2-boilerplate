@@ -21,7 +21,7 @@ bool GameStage::update(float dt) {
 }
 
 void GameStage::render() {
-	graphics_objects->graphics_ptr->fill(COLOURS::BLUE);
+	graphics_objects->graphics.fill(COLOURS::BLUE);
 
 	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(0, Framework::Vec(128, 64));
 
@@ -90,7 +90,7 @@ void PausedStage::render() {
 	_background_stage->render();
 
 	// Render pause menu
-	graphics_objects->graphics_ptr->fill(COLOURS::BLACK, 0x7f);
+	graphics_objects->graphics.fill(COLOURS::BLACK, 0x7f);
 
 	for (const Framework::Button& button : buttons) {
 		button.render();

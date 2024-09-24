@@ -36,7 +36,7 @@ bool IntroStage::update(float dt) {
 }
 
 void IntroStage::render() {
-	graphics_objects->graphics_ptr->fill(COLOURS::BLUE);
+	graphics_objects->graphics.fill(COLOURS::BLUE);
 
 	// Display some intro text in the centre of the display
 	intro_text.render(WINDOW::SIZE_HALF);
@@ -107,10 +107,10 @@ bool TitleStage::update(float dt) {
 }
 
 void TitleStage::render() {
-	graphics_objects->graphics_ptr->fill(COLOURS::BLUE);
+	graphics_objects->graphics.fill(COLOURS::BLUE);
 
-	graphics_objects->graphics_ptr->render_circle(Framework::Vec(20, 20), 10, COLOURS::BLACK);
-	graphics_objects->graphics_ptr->render_rect(Framework::Rect(40, 20, 10, 30), COLOURS::BLACK);
+	graphics_objects->graphics.render_circle(Framework::Vec(20, 20), 10, COLOURS::BLACK);
+	graphics_objects->graphics.render_rect(Framework::Rect(40, 20, 10, 30), COLOURS::BLACK);
 
 	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(0, Framework::Vec(64, 48));
 

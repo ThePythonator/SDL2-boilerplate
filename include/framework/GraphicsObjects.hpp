@@ -13,8 +13,8 @@
 
 namespace Framework {
 	struct GraphicsObjects {
-		Graphics* graphics_ptr = nullptr;
-		Window* window_ptr = nullptr;
+		Graphics graphics;
+		Window window;
 
 		std::vector<Image*> image_ptrs;
 		std::vector<Spritesheet*> spritesheet_ptrs;
