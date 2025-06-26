@@ -17,8 +17,8 @@ namespace Framework {
 		Window window;
 
 		std::vector<Image*> image_ptrs;
-		std::vector<Spritesheet*> spritesheet_ptrs;
-		std::vector<Font*> font_ptrs;
+		std::vector<Spritesheet> spritesheets;
+		std::vector<Font> fonts;
 		std::vector<BaseTransition*> transition_ptrs;
 
 		std::vector<Button::ButtonImages> button_image_groups;

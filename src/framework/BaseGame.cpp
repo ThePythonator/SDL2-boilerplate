@@ -143,8 +143,8 @@ namespace Framework {
 
 		// Set up graphics_objects vectors:
 		graphics_objects.image_ptrs = std::vector<Framework::Image*>(GRAPHICS_OBJECTS::IMAGES::TOTAL_IMAGES);
-		graphics_objects.spritesheet_ptrs = std::vector<Framework::Spritesheet*>(GRAPHICS_OBJECTS::SPRITESHEETS::TOTAL_SPRITESHEETS);
-		graphics_objects.font_ptrs = std::vector<Framework::Font*>(GRAPHICS_OBJECTS::FONTS::TOTAL_FONTS);
+		graphics_objects.spritesheets = std::vector<Framework::Spritesheet>(GRAPHICS_OBJECTS::SPRITESHEETS::TOTAL_SPRITESHEETS);
+		graphics_objects.fonts = std::vector<Framework::Font>(GRAPHICS_OBJECTS::FONTS::TOTAL_FONTS);
 		graphics_objects.transition_ptrs = std::vector<Framework::BaseTransition*>(GRAPHICS_OBJECTS::TRANSITIONS::TOTAL_TRANSITIONS);
 		graphics_objects.button_image_groups = std::vector<Framework::Button::ButtonImages>(GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::TOTAL_BUTTON_IMAGE_GROUPS);
 
@@ -160,26 +160,12 @@ namespace Framework {
 
 		// Clear graphics objects stuff
 
-		// Clear spritesheets
-		for (Framework::Spritesheet* spritesheet_ptr : graphics_objects.spritesheet_ptrs) {
-			if (!spritesheet_ptr) continue;
-			delete spritesheet_ptr;
-		}
-		graphics_objects.spritesheet_ptrs.clear();
-
 		// Clear images
 		for (Framework::Image* image_ptr : graphics_objects.image_ptrs) {
 			if (!image_ptr) continue;
 			delete image_ptr;
 		}
 		graphics_objects.image_ptrs.clear();
-
-		// Clear fonts
-		for (Framework::Font* font_ptr : graphics_objects.font_ptrs) {
-			if (!font_ptr) continue;
-			delete font_ptr;
-		}
-		graphics_objects.font_ptrs.clear();
 
 		// Clear transitions
 		for (Framework::BaseTransition* transition_ptr : graphics_objects.transition_ptrs) {
@@ -195,8 +181,6 @@ namespace Framework {
 			delete button_images.hovered;
 			delete button_images.selected;
 		}
-
-
 		
 		// Destroy renderer and window
 		SDL_DestroyRenderer(renderer);

@@ -27,13 +27,13 @@ void Game::load_data() {
 	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::FONT_SPRITESHEET] = Framework::create_image(&graphics_objects.graphics, IMAGES_PATH + PATHS::IMAGES::FONT_SPRITESHEET, Framework::Image::Flags::SDL_TEXTURE | Framework::Image::Flags::SDL_SURFACE);
 	
 	// Create spritesheet from spritesheet image
-	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET] = new Framework::Spritesheet(graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::MAIN_SPRITESHEET], SPRITES::SIZE, SPRITES::SCALE);
+	graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET] = Framework::Spritesheet(graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::MAIN_SPRITESHEET], SPRITES::SIZE, SPRITES::SCALE);
 
 	// Create spritesheet from font image
-	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::FONT_SPRITESHEET] = new Framework::Spritesheet(graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::FONT_SPRITESHEET], FONTS::SIZE::MAIN_FONT, FONTS::SCALE::MAIN_FONT);
+	graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::FONT_SPRITESHEET] = Framework::Spritesheet(graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::FONT_SPRITESHEET], FONTS::SIZE::MAIN_FONT, FONTS::SCALE::MAIN_FONT);
 
 	// Create font from font spritesheet
-	graphics_objects.font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT] = new Framework::Font(graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::FONT_SPRITESHEET], FONTS::SPACING::MAIN_FONT);
+	graphics_objects.fonts[GRAPHICS_OBJECTS::FONTS::MAIN_FONT] = Framework::Font(&graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::FONT_SPRITESHEET], FONTS::SPACING::MAIN_FONT);
 	
 
 	// Load button images
@@ -45,13 +45,13 @@ void Game::load_data() {
 	};
 
 	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD].unselected->set_render_target();
-	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->rect(Framework::Rect(0, 16, 64, 16), Framework::Vec(0, 0), 1.0f);
+	graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET].rect(Framework::Rect(0, 16, 64, 16), Framework::Vec(0, 0), 1.0f);
 
 	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD].hovered->set_render_target();
-	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->rect(Framework::Rect(0, 32, 64, 16), Framework::Vec(0, 0), 1.0f);
+	graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET].rect(Framework::Rect(0, 32, 64, 16), Framework::Vec(0, 0), 1.0f);
 
 	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD].selected->set_render_target();
-	graphics_objects.spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->rect(Framework::Rect(0, 48, 64, 16), Framework::Vec(0, 0), 1.0f);
+	graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET].rect(Framework::Rect(0, 48, 64, 16), Framework::Vec(0, 0), 1.0f);
 
 	Framework::SDLUtils::SDL_UnsetRenderTarget(graphics_objects.graphics.get_renderer());
 
