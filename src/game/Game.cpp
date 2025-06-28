@@ -60,7 +60,7 @@ void Game::load_data() {
 
 
 	// Create transitions
-	graphics_objects.transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION] = new Framework::FadeTransition(&graphics_objects.graphics, COLOURS::BLACK, TRANSITIONS::FADE_TIME);
+	graphics_objects.transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION] = std::make_unique<Framework::FadeTransition>(&graphics_objects.graphics, COLOURS::BLACK, TRANSITIONS::FADE_TIME);
 }
 
 void Game::clear_data() {

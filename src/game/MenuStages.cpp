@@ -8,7 +8,7 @@ void IntroStage::start() {
 	intro_timer.stop();
 
 	// Start transition
-	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION].get());
 	transition->open();
 }
 
@@ -63,7 +63,7 @@ void TitleStage::start() {
 	);
 
 	// Set transition
-	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION].get());
 
 	// Start transition
 	transition->open();

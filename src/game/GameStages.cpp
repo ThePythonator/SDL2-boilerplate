@@ -4,7 +4,7 @@
 
 void GameStage::start() {
 	// Set transition
-	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION].get());
 
 	// Start transition
 	transition->open();
@@ -52,7 +52,7 @@ void PausedStage::start() {
 	);
 
 	// Set transition
-	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION].get());
 }
 
 bool PausedStage::update(float dt) {

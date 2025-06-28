@@ -145,7 +145,7 @@ namespace Framework {
 		graphics_objects.image_ptrs = std::vector<std::unique_ptr<Framework::Image>>(GRAPHICS_OBJECTS::IMAGES::TOTAL_IMAGES);
 		graphics_objects.spritesheets = std::vector<Framework::Spritesheet>(GRAPHICS_OBJECTS::SPRITESHEETS::TOTAL_SPRITESHEETS);
 		graphics_objects.fonts = std::vector<Framework::Font>(GRAPHICS_OBJECTS::FONTS::TOTAL_FONTS);
-		graphics_objects.transition_ptrs = std::vector<Framework::BaseTransition*>(GRAPHICS_OBJECTS::TRANSITIONS::TOTAL_TRANSITIONS);
+		graphics_objects.transition_ptrs = std::vector<std::unique_ptr<Framework::BaseTransition>>(GRAPHICS_OBJECTS::TRANSITIONS::TOTAL_TRANSITIONS);
 		graphics_objects.button_image_groups = std::vector<Framework::Button::ButtonImages>(GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::TOTAL_BUTTON_IMAGE_GROUPS);
 
 		// Load game data
@@ -158,15 +158,6 @@ namespace Framework {
 		// Clear game data
 		clear_data();
 
-		// Clear graphics objects stuff
-
-		// Clear transitions
-		for (Framework::BaseTransition* transition_ptr : graphics_objects.transition_ptrs) {
-			if (!transition_ptr) continue;
-			delete transition_ptr;
-		}
-		graphics_objects.transition_ptrs.clear();
-		
 		// Destroy renderer and window
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
