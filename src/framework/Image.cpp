@@ -299,29 +299,29 @@ namespace Framework {
 	}
 
 
-	Image* create_image(Graphics* graphics, std::string path, uint8_t flags) {
-		Image* image_ptr = new Image(graphics);
+	std::unique_ptr<Image> create_image(Graphics* graphics, std::string path, uint8_t flags) {
+		std::unique_ptr<Image> image_ptr = std::make_unique<Image>(graphics);
 		image_ptr->load(path, flags);
-		return image_ptr;
+		return std::move(image_ptr);
 	}
-	Image* create_image(Graphics* graphics, const vec2& size) {
-		Image* image_ptr = new Image(graphics);
+	std::unique_ptr<Image> create_image(Graphics* graphics, const vec2& size) {
+		std::unique_ptr<Image> image_ptr = std::make_unique<Image>(graphics);
 		image_ptr->load(size);
-		return image_ptr;
+		return std::move(image_ptr);
 	}
-	Image* create_image(Graphics* graphics, const vec2& size, const Colour& colour, bool use_alpha) {
-		Image* image_ptr = create_image(graphics, size);
+	std::unique_ptr<Image> create_image(Graphics* graphics, const vec2& size, const Colour& colour, bool use_alpha) {
+		std::unique_ptr<Image> image_ptr = create_image(graphics, size);
 		// Fill image white first
-		SDLUtils::SDL_RenderFillRectToImage(graphics->get_renderer(), image_ptr, Rect(VEC_NULL, size), Colour(0xFF, 0xFF, 0xFF));
+		SDLUtils::SDL_RenderFillRectToImage(graphics->get_renderer(), image_ptr.get(), Rect(VEC_NULL, size), Colour(0xFF, 0xFF, 0xFF));
 
 		if (use_alpha) {
-			SDLUtils::SDL_RenderFillImageWithAlphaMod(graphics->get_renderer(), image_ptr, colour);
+			SDLUtils::SDL_RenderFillImageWithAlphaMod(graphics->get_renderer(), image_ptr.get(), colour);
 		}
 		else {
-			SDLUtils::SDL_RenderFillImageWithoutAlphaMod(graphics->get_renderer(), image_ptr, colour);
+			SDLUtils::SDL_RenderFillImageWithoutAlphaMod(graphics->get_renderer(), image_ptr.get(), colour);
 		}
 
-		return image_ptr;
+		return std::move(image_ptr);
 	}
 
 

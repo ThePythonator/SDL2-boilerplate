@@ -13,13 +13,13 @@
 
 namespace Framework {
 	struct GraphicsObjects {
-		Graphics* graphics_ptr = nullptr;
-		Window* window_ptr = nullptr;
+		Graphics graphics;
+		Window window;
 
-		std::vector<Image*> image_ptrs;
-		std::vector<Spritesheet*> spritesheet_ptrs;
-		std::vector<Font*> font_ptrs;
-		std::vector<BaseTransition*> transition_ptrs;
+		std::vector<std::unique_ptr<Image>> image_ptrs;
+		std::vector<Spritesheet> spritesheets;
+		std::vector<Font> fonts;
+		std::vector<std::unique_ptr<BaseTransition>> transition_ptrs;
 
 		std::vector<Button::ButtonImages> button_image_groups;
 	};

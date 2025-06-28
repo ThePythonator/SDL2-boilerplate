@@ -4,7 +4,7 @@
 
 void GameStage::start() {
 	// Set transition
-	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION].get());
 
 	// Start transition
 	transition->open();
@@ -21,9 +21,9 @@ bool GameStage::update(float dt) {
 }
 
 void GameStage::render() {
-	graphics_objects->graphics_ptr->fill(COLOURS::BLUE);
+	graphics_objects->graphics.fill(COLOURS::BLUE);
 
-	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(0, Framework::Vec(128, 64));
+	graphics_objects->spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET].sprite(0, Framework::Vec(128, 64));
 
 	transition->render();
 }
@@ -41,18 +41,18 @@ void PausedStage::start() {
 	buttons.emplace_back(
 		Framework::Rect(WINDOW::SIZE_HALF - Framework::Vec(128, 32), Framework::Vec(256, 64)),
 		graphics_objects->button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD],
-		Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Resume", COLOURS::BLACK, 4.0f),
+		Framework::Text(&graphics_objects->fonts[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Resume", COLOURS::BLACK, 4.0f),
 		BUTTONS::PAUSED::RESUME
 	);
 	buttons.emplace_back(
 		Framework::Rect(WINDOW::SIZE_HALF - Framework::Vec(128, -64), Framework::Vec(256, 64)),
 		graphics_objects->button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD],
-		Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Exit", COLOURS::BLACK, 4.0f),
+		Framework::Text(&graphics_objects->fonts[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Exit", COLOURS::BLACK, 4.0f),
 		BUTTONS::PAUSED::EXIT
 	);
 
 	// Set transition
-	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION].get());
 }
 
 bool PausedStage::update(float dt) {
@@ -90,7 +90,7 @@ void PausedStage::render() {
 	_background_stage->render();
 
 	// Render pause menu
-	graphics_objects->graphics_ptr->fill(COLOURS::BLACK, 0x7f);
+	graphics_objects->graphics.fill(COLOURS::BLACK, 0x7f);
 
 	for (const Framework::Button& button : buttons) {
 		button.render();

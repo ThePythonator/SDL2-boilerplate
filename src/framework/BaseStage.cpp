@@ -53,9 +53,7 @@ namespace Framework {
 	}
 
 	void BaseStage::clear_transition() {
-		if (transition != nullptr) {
-			delete transition;
-			transition = nullptr;
-		}
+		// Do not actually delete transition because this raw pointer is non-owning
+		transition = nullptr;
 	}
 }

@@ -17,6 +17,7 @@ namespace Framework {
 		};
 
 		struct ButtonImages {
+			// The objects pointed to are managed by smart pointers in GraphicsObjects
 			Image* unselected = nullptr;
 			Image* hovered = nullptr;
 			Image* selected = nullptr;

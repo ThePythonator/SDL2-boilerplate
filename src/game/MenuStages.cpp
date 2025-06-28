@@ -3,12 +3,12 @@
 // IntroStage
 
 void IntroStage::start() {
-	intro_text = Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Some intro text", COLOURS::BLACK);
+	intro_text = Framework::Text(&graphics_objects->fonts[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Some intro text", COLOURS::BLACK);
 
 	intro_timer.stop();
 
 	// Start transition
-	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION].get());
 	transition->open();
 }
 
@@ -36,7 +36,7 @@ bool IntroStage::update(float dt) {
 }
 
 void IntroStage::render() {
-	graphics_objects->graphics_ptr->fill(COLOURS::BLUE);
+	graphics_objects->graphics.fill(COLOURS::BLUE);
 
 	// Display some intro text in the centre of the display
 	intro_text.render(WINDOW::SIZE_HALF);
@@ -52,18 +52,18 @@ void TitleStage::start() {
 	buttons.emplace_back(
 		Framework::Rect(WINDOW::SIZE_HALF - Framework::Vec(128, 32), Framework::Vec(256, 64)),
 		graphics_objects->button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD],
-		Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Play", COLOURS::BLACK, 4.0f),
+		Framework::Text(&graphics_objects->fonts[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Play", COLOURS::BLACK, 4.0f),
 		BUTTONS::TITLE::PLAY
 	);
 	buttons.emplace_back(
 		Framework::Rect(WINDOW::SIZE_HALF - Framework::Vec(128, -64), Framework::Vec(256, 64)),
 		graphics_objects->button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD],
-		Framework::Text(graphics_objects->font_ptrs[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Quit", COLOURS::BLACK, 4.0f),
+		Framework::Text(&graphics_objects->fonts[GRAPHICS_OBJECTS::FONTS::MAIN_FONT], "Quit", COLOURS::BLACK, 4.0f),
 		BUTTONS::TITLE::QUIT
 	);
 
 	// Set transition
-	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION]);
+	set_transition(graphics_objects->transition_ptrs[GRAPHICS_OBJECTS::TRANSITIONS::FADE_TRANSITION].get());
 
 	// Start transition
 	transition->open();
@@ -107,17 +107,17 @@ bool TitleStage::update(float dt) {
 }
 
 void TitleStage::render() {
-	graphics_objects->graphics_ptr->fill(COLOURS::BLUE);
+	graphics_objects->graphics.fill(COLOURS::BLUE);
 
-	graphics_objects->graphics_ptr->render_circle(Framework::Vec(20, 20), 10, COLOURS::BLACK);
-	graphics_objects->graphics_ptr->render_rect(Framework::Rect(40, 20, 10, 30), COLOURS::BLACK);
+	graphics_objects->graphics.render_circle(Framework::Vec(20, 20), 10, COLOURS::BLACK);
+	graphics_objects->graphics.render_rect(Framework::Rect(40, 20, 10, 30), COLOURS::BLACK);
 
-	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(0, Framework::Vec(64, 48));
+	graphics_objects->spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET].sprite(0, Framework::Vec(64, 48));
 
-	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(2, Framework::Vec(16, 48));
-	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(2, Framework::Vec(32, 48), Framework::SpriteTransform::ROTATE_90_ACW);
+	graphics_objects->spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET].sprite(2, Framework::Vec(16, 48));
+	graphics_objects->spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET].sprite(2, Framework::Vec(32, 48), Framework::SpriteTransform::ROTATE_90_ACW);
 
-	graphics_objects->spritesheet_ptrs[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET]->sprite(1, Framework::Vec(96, 48), SPRITES::SCALE, _timer.time() * 90);
+	graphics_objects->spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET].sprite(1, Framework::Vec(96, 48), SPRITES::SCALE, _timer.time() * 90);
 
 	for (const Framework::Button& button : buttons) {
 		button.render();
