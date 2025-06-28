@@ -24,12 +24,12 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu-latest
             name: Linux
             release-suffix: LIN64
             can-fail: false
 
-          - os: ubuntu-20.04
+          - os: ubuntu-latest
             name: Emscripten
             release-suffix: WEB
             cmake-prefix: emcmake
@@ -64,7 +64,7 @@ jobs:
     - name: Setup Emscripten cache
       if: matrix.name == 'Emscripten'
       id: cache-system-libraries
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{env.EM_CACHE_FOLDER}}
         key: ${{env.EM_VERSION}}-${{runner.os}}
