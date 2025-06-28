@@ -142,7 +142,7 @@ namespace Framework {
 		graphics_objects.window.set_window(window);
 
 		// Set up graphics_objects vectors:
-		graphics_objects.image_ptrs = std::vector<Framework::Image*>(GRAPHICS_OBJECTS::IMAGES::TOTAL_IMAGES);
+		graphics_objects.image_ptrs = std::vector<std::unique_ptr<Framework::Image>>(GRAPHICS_OBJECTS::IMAGES::TOTAL_IMAGES);
 		graphics_objects.spritesheets = std::vector<Framework::Spritesheet>(GRAPHICS_OBJECTS::SPRITESHEETS::TOTAL_SPRITESHEETS);
 		graphics_objects.fonts = std::vector<Framework::Font>(GRAPHICS_OBJECTS::FONTS::TOTAL_FONTS);
 		graphics_objects.transition_ptrs = std::vector<Framework::BaseTransition*>(GRAPHICS_OBJECTS::TRANSITIONS::TOTAL_TRANSITIONS);
@@ -159,13 +159,6 @@ namespace Framework {
 		clear_data();
 
 		// Clear graphics objects stuff
-
-		// Clear images
-		for (Framework::Image* image_ptr : graphics_objects.image_ptrs) {
-			if (!image_ptr) continue;
-			delete image_ptr;
-		}
-		graphics_objects.image_ptrs.clear();
 
 		// Clear transitions
 		for (Framework::BaseTransition* transition_ptr : graphics_objects.transition_ptrs) {

@@ -27,21 +27,24 @@ void Game::load_data() {
 	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::FONT_SPRITESHEET] = Framework::create_image(&graphics_objects.graphics, IMAGES_PATH + PATHS::IMAGES::FONT_SPRITESHEET, Framework::Image::Flags::SDL_TEXTURE | Framework::Image::Flags::SDL_SURFACE);
 	
 	// Create spritesheet from spritesheet image
-	graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET] = Framework::Spritesheet(graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::MAIN_SPRITESHEET], SPRITES::SIZE, SPRITES::SCALE);
+	graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET] = Framework::Spritesheet(graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::MAIN_SPRITESHEET].get(), SPRITES::SIZE, SPRITES::SCALE);
 
 	// Create spritesheet from font image
-	graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::FONT_SPRITESHEET] = Framework::Spritesheet(graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::FONT_SPRITESHEET], FONTS::SIZE::MAIN_FONT, FONTS::SCALE::MAIN_FONT);
+	graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::FONT_SPRITESHEET] = Framework::Spritesheet(graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::FONT_SPRITESHEET].get(), FONTS::SIZE::MAIN_FONT, FONTS::SCALE::MAIN_FONT);
 
 	// Create font from font spritesheet
 	graphics_objects.fonts[GRAPHICS_OBJECTS::FONTS::MAIN_FONT] = Framework::Font(&graphics_objects.spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::FONT_SPRITESHEET], FONTS::SPACING::MAIN_FONT);
 	
-
 	// Load button images
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::STANDARD_BUTTON_UNSELECTED] = Framework::create_image(&graphics_objects.graphics, Framework::Vec(64, 16));
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::STANDARD_BUTTON_HOVERED] = Framework::create_image(&graphics_objects.graphics, Framework::Vec(64, 16));
+	graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::STANDARD_BUTTON_SELECTED] = Framework::create_image(&graphics_objects.graphics, Framework::Vec(64, 16));
+
 	// TODO: also could change into a single function to create an image from a spritesheet
 	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD] = {
-		.unselected = Framework::create_image(&graphics_objects.graphics, Framework::Vec(64, 16)),
-		.hovered    = Framework::create_image(&graphics_objects.graphics, Framework::Vec(64, 16)),
-		.selected   = Framework::create_image(&graphics_objects.graphics, Framework::Vec(64, 16)),
+		.unselected = graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::STANDARD_BUTTON_UNSELECTED].get(),
+		.hovered    = graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::STANDARD_BUTTON_HOVERED].get(),
+		.selected   = graphics_objects.image_ptrs[GRAPHICS_OBJECTS::IMAGES::STANDARD_BUTTON_SELECTED].get(),
 	};
 
 	graphics_objects.button_image_groups[GRAPHICS_OBJECTS::BUTTON_IMAGE_GROUPS::STANDARD].unselected->set_render_target();

@@ -16,7 +16,7 @@ namespace Framework {
 		Graphics graphics;
 		Window window;
 
-		std::vector<Image*> image_ptrs;
+		std::vector<std::unique_ptr<Image>> image_ptrs;
 		std::vector<Spritesheet> spritesheets;
 		std::vector<Font> fonts;
 		std::vector<BaseTransition*> transition_ptrs;

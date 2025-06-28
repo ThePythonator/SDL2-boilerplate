@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -67,9 +68,9 @@ namespace Framework {
 		uint32_t _h = 0;
 	};
 
-	Image* create_image(Graphics* graphics, std::string path, uint8_t flags = Image::Flags::ALL);
-	Image* create_image(Graphics* graphics, const vec2& size);
-	Image* create_image(Graphics* graphics, const vec2& size, const Colour& colour, bool use_alpha = false);
+	std::unique_ptr<Image> create_image(Graphics* graphics, std::string path, uint8_t flags = Image::Flags::ALL);
+	std::unique_ptr<Image> create_image(Graphics* graphics, const vec2& size);
+	std::unique_ptr<Image> create_image(Graphics* graphics, const vec2& size, const Colour& colour, bool use_alpha = false);
 
 	namespace SDLUtils {
 		void SDL_SetRenderTarget(SDL_Renderer* renderer, Image* image);
