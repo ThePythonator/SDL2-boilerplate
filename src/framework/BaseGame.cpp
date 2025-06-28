@@ -166,14 +166,6 @@ namespace Framework {
 			delete transition_ptr;
 		}
 		graphics_objects.transition_ptrs.clear();
-
-		// Clear button images
-		graphics_objects.button_image_groups.clear();
-		for (const Framework::Button::ButtonImages& button_images : graphics_objects.button_image_groups) {
-			delete button_images.unselected;
-			delete button_images.hovered;
-			delete button_images.selected;
-		}
 		
 		// Destroy renderer and window
 		SDL_DestroyRenderer(renderer);
