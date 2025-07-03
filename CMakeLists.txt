@@ -50,6 +50,7 @@ set(FRAMEWORK_SOURCES
 	"Font.cpp"
 	"Image.cpp"
 	"Spritesheet.cpp"
+	"Animation.cpp"
 
 	"Colour.cpp"
 

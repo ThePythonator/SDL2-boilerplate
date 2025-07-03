@@ -8,10 +8,65 @@ void GameStage::start() {
 
 	// Start transition
 	transition->open();
+
+	// Create animation
+	Framework::Animation demo_animation = {
+		{0, 0.5f, Framework::SpriteTransform::NONE},
+		{0, 0.5f, Framework::SpriteTransform::ROTATE_90_CW},
+		{0, 0.5f, Framework::SpriteTransform::ROTATE_180_CW},
+		{0, 0.5f, Framework::SpriteTransform::ROTATE_270_CW}
+	};
+	// Create animation handler
+	spinning_sword = std::make_unique<Framework::AnimationHandler>(graphics_objects->spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET], demo_animation);
+
+	// Create big animation
+	Framework::MultiTileAnimation big_multi_animation = {
+		{
+			{0, 0},
+			{
+				{4, 1.0f, Framework::SpriteTransform::NONE},
+				{8, 0.4f, Framework::SpriteTransform::NONE},
+				{12, 0.2f, Framework::SpriteTransform::NONE},
+				{8, 0.4f, Framework::SpriteTransform::NONE},
+			}
+		},
+		{
+			{16, 0},
+			{
+				{5, 1.0f, Framework::SpriteTransform::NONE},
+				{9, 0.4f, Framework::SpriteTransform::NONE},
+				{13, 0.2f, Framework::SpriteTransform::NONE},
+				{9, 0.4f, Framework::SpriteTransform::NONE},
+			}
+		},
+		{
+			{32, 0},
+			{
+				{6, 1.0f, Framework::SpriteTransform::NONE},
+				{10, 0.4f, Framework::SpriteTransform::NONE},
+				{14, 0.2f, Framework::SpriteTransform::NONE},
+				{10, 0.4f, Framework::SpriteTransform::NONE},
+			}
+		},
+		{
+			{48, 0},
+			{
+				{7, 1.0f, Framework::SpriteTransform::NONE},
+				{11, 0.4f, Framework::SpriteTransform::NONE},
+				{15, 0.2f, Framework::SpriteTransform::NONE},
+				{11, 0.4f, Framework::SpriteTransform::NONE},
+			}
+		},
+	};
+	// Create animation handler
+	big_animation = std::make_unique<Framework::MultiTileAnimationHandler>(graphics_objects->spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET], big_multi_animation);
 }
 
 bool GameStage::update(float dt) {
 	transition->update(dt);
+
+	spinning_sword->update(dt);
+	big_animation->update(dt);
 
 	if (input->just_down(Framework::KeyHandler::Key::ESCAPE) || input->just_down(Framework::KeyHandler::Key::P)) {
 		finish(new PausedStage(this), false);
@@ -24,6 +79,9 @@ void GameStage::render() {
 	graphics_objects->graphics.fill(COLOURS::BLUE);
 
 	graphics_objects->spritesheets[GRAPHICS_OBJECTS::SPRITESHEETS::MAIN_SPRITESHEET].sprite(0, Framework::Vec(128, 64));
+
+	spinning_sword->render({ 64, 64 });
+	big_animation->render({ 64, 96 });
 
 	transition->render();
 }
