@@ -3,5 +3,6 @@
 # SDL2-boilerplate
 A basic framework for SDL2 games.
 
-# Building
-Requires cmake. (Still need to fix repo, then I can start writing the docs).
+Since SDL3, and the SDL3 versions of SDL_image, and SDL_mixer are all finally here, I'll be starting again from scratch with SPOT (SDL3 Practical Object Toolkit), hopefully this time as a proper library instead of as boilerplate code.
+
+Check it out here: https://github.com/ThePythonator/SPOT
